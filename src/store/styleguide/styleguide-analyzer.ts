@@ -13,7 +13,16 @@ export abstract class StyleguideAnalyzer<T extends Pattern = Pattern> {
 		return this.id;
 	}
 
+	/**
+	 * Returns the type of a pattern.
+	 * @return The type of a pattern.
+	 */
 	public abstract getPatternType(): PatternType;
 
+	/**
+	 * Returns the folder with all patterns.
+	 * @param path
+	 * @return The folder (including subfolders) with all patterns.
+	 */
 	public abstract analyze(path: string): Folder<T>;
 }

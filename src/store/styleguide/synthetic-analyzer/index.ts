@@ -6,10 +6,18 @@ import { PatternType } from '../../pattern/pattern-type';
 import * as patternFactories from './patterns';
 
 export class SyntheticAnalyzer extends StyleguideAnalyzer {
+	/**
+	 * Returns the type of a pattern.
+	 * @return The type of a pattern.
+	 */
 	public getPatternType(): PatternType {
 		return PatternType.synthetic;
 	}
 
+	/**
+	 * Returns the folder with all patterns.
+	 * @return An array of folders of this styleguide.
+	 */
 	public analyze(path: string): Folder<Pattern> {
 		const patterns: Pattern[] = [
 			patternFactories.createTextPattern({

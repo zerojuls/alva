@@ -85,6 +85,11 @@ export class Pattern {
 		return this.iconPath;
 	}
 
+	/**
+	 * Sets the absolute path to the icon of the pattern.
+	 * @param iconPath The absolute path of the icon.
+	 * @return void.
+	 */
 	public setIconPath(iconPath: string | undefined): void {
 		this.iconPath = iconPath;
 	}
@@ -98,6 +103,11 @@ export class Pattern {
 		return this.name;
 	}
 
+	/**
+	 * Sets the human-readable name of the pattern.
+	 * @param name The human-readable name of the pattern.
+	 * @return void.
+	 */
 	public setName(name: string): void {
 		this.name = name;
 	}
@@ -110,6 +120,11 @@ export class Pattern {
 		return this.properties;
 	}
 
+	/**
+	 * Sets the properties this pattern supports.
+	 * @param properties The properties this pattern supports.
+	 * @return void.
+	 */
 	public setProperties(properties: Map<string, Property>): void {
 		this.properties = properties;
 	}
