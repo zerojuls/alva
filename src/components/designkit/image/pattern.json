@@ -1,0 +1,7 @@
+{
+  "displayName": "Image",
+  "flag": "alpha",
+  "name": "@designkit/image",
+  "version": "1.0.0",
+  "tags": ["atom", "designkit"]
+}

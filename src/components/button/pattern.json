@@ -3,6 +3,6 @@
 	"displayName": "Button",
 	"description": "Weighted Interaction",
 	"version": "1.0.0",
-	"tags": ["atom", "button"],
+	"tags": ["alva"],
 	"flag": "alpha"
 }

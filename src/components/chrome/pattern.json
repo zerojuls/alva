@@ -3,5 +3,6 @@
 	"description": "Custom title bar",
 	"displayName": "Chrome",
 	"version": "1.0.0",
-	"flag": "alpha"
+	"flag": "alpha",
+	"tags": ["alva"]
 }

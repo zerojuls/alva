@@ -3,5 +3,6 @@
 	"displayName": "Pattern List",
 	"description": "List patterns for element creation",
 	"flag": "alpha",
-	"version": "1.0.0"
+	"version": "1.0.0",
+	"tags": ["alva"]
  }

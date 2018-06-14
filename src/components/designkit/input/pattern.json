@@ -1,0 +1,7 @@
+{
+	"displayName": "Input",
+	"flag": "alpha",
+	"name": "@designkit/input",
+	"version": "1.0.0",
+	"tags": ["atom", "designkit"]
+}

@@ -3,5 +3,8 @@
 	"displayName": "String Item",
 	"description": "Input for string values",
 	"version": "1.0.0",
-	"tags": ["property"]
+	"tags": [
+		"alva",
+		"property"
+	]
 }

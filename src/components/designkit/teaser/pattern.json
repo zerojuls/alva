@@ -1,0 +1,7 @@
+{
+  "name": "@designkit/teaser",
+  "displayName": "Teaser",
+  "version": "1.0.0",
+  "tags": ["molecule", "designkit"],
+  "flag": "alpha"
+}

@@ -3,5 +3,5 @@
 	"displayName": "Preview Pane",
 	"flag": "alpha",
 	"version": "1.0.0",
-	"tags": ["atom", "preview-pane"]
+	"tags": ["alva", "pane", "preview-pane"]
  }

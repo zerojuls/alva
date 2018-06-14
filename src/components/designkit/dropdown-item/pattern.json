@@ -1,0 +1,7 @@
+{
+  "name": "@designkit/dropdown-item",
+  "displayName": "Dropdown Item",
+  "version": "1.0.0",
+	"tags": ["atom", "designkit"],
+  "flag": "alpha"
+}

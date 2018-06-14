@@ -3,5 +3,8 @@
 	"displayName": "Property Item: Number",
 	"description": "Input field for number values",
 	"version": "1.0.0",
-	"tags": ["property"]
+	"tags": [
+		"alva",
+		"property"
+	]
 }

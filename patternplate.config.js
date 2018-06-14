@@ -10,12 +10,14 @@ const logo = `
 `;
 
 module.exports = {
-	cover: './website',
+	cover: './build/website',
 	docs: [
 		'*.md',
 		'docs/*.md'
 	],
-	entry: ['build/components/**/demo.js'],
+	entry: [
+		'build/components/**/demo.js'
+	],
 	render: '@patternplate/render-styled-components/render',
 	mount: '@patternplate/render-styled-components/mount',
 	ui: {

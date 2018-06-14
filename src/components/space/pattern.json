@@ -4,5 +4,7 @@
 	"description": "Define spatial distance",
 	"flag": "alpha",
 	"version": "1.0.0",
-	"tags": ["space"]
+	"tags": [
+		"alva"
+	]
 }

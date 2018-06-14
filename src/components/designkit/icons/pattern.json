@@ -1,0 +1,7 @@
+{
+  "name": "@designkit/icons",
+  "displayName": "Icons",
+  "version": "1.0.0",
+  "tags": ["atom", "designkit"],
+  "flag": "alpha"
+}

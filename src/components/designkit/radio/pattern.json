@@ -1,0 +1,7 @@
+{
+  "name": "@designkit/radio",
+  "displayName": "Radio",
+  "version": "1.0.0",
+  "tags": ["atom", "designkit"],
+  "flag": "alpha"
+}

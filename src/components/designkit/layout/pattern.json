@@ -1,0 +1,7 @@
+{
+  "name": "@designkit/layout",
+  "displayName": "Layout",
+  "version": "1.0.0",
+  "tags": ["atom", "designkit"],
+  "flag": "alpha"
+}

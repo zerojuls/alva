@@ -4,6 +4,7 @@
 	"description": "Input field for boolean values",
 	"version": "1.0.0",
 	"tags": [
+		"alva",
 		"property"
 	]
 }

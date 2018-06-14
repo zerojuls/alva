@@ -1,0 +1,7 @@
+{
+  "name": "@designkit/feature-list",
+  "displayName": "Feature List",
+  "version": "1.0.0",
+  "tags": ["organism", "designkit"],
+  "flag": "alpha"
+}

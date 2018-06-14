@@ -3,6 +3,5 @@
 	"displayName": "Splash Screen",
 	"description": "Greet Alva users",
 	"flag": "alpha",
-	"version": "1.0.0",
-	"tags": ["splash-screen"]
+	"version": "1.0.0"
 }

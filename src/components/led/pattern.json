@@ -4,5 +4,6 @@
 	"main": "./led",
 	"name": "led",
 	"flag": "alpha",
+	"tags": ["alva"],
 	"version": "1.0.0"
  }

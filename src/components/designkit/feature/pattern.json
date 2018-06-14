@@ -1,0 +1,7 @@
+{
+  "name": "@designkit/feature",
+  "displayName": "Feature",
+  "version": "1.0.0",
+  "tags": ["molecule", "designkit"],
+  "flag": "alpha"
+}
