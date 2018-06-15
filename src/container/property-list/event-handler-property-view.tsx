@@ -109,10 +109,9 @@ export class EventHandlerPropertyView extends React.Component<EventHandlerProper
 				key={props.elementProperty.getId()}
 				style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}
 			>
-				<Component.PropertyBox
-					headline={patternProperty.getLabel()}
-					copy={patternProperty.getDescription()}
-				>
+				<Component.PropertyBox>
+					<Component.Headline order={4}>{patternProperty.getLabel()}</Component.Headline>
+					<Component.Copy textColor={Component.Color.Grey50}>{patternProperty.getDescription()}</Component.Copy>
 					<div
 						style={{
 							display: 'flex',

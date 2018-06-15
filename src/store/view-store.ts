@@ -63,7 +63,7 @@ export class ViewStore {
 
 	@Mobx.observable private showPages: boolean = true;
 
-	@Mobx.observable private showRightSidebar: boolean = true;
+	@Mobx.observable private showRightSidebar: Types.ShowRightSidebar | null = Types.ShowRightSidebar.Properties;
 
 	@Mobx.observable private serverPort: number;
 
@@ -929,12 +929,12 @@ export class ViewStore {
 		this.showLeftSidebar = show;
 	}
 
-	public getShowRightSidebar(): boolean {
+	public getShowRightSidebar(): Types.ShowRightSidebar | null {
 		return this.showRightSidebar;
 	}
 
-	public setShowRightSidebar(show: boolean): void {
-		this.showRightSidebar = show;
+	public setShowRightSidebar(pane: Types.ShowRightSidebar | null): void {
+		this.showRightSidebar = pane;
 	}
 
 	public getShowPages(): boolean {

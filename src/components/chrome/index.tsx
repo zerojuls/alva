@@ -1,7 +1,6 @@
 import { Color } from '../colors';
 import { fonts } from '../fonts';
 import * as React from 'react';
-import { getSpace, SpaceSize } from '../space';
 import styled from 'styled-components';
 
 export interface ChromeProps {
@@ -16,7 +15,6 @@ const StyledChrome = styled.div`
 	align-items: center;
 	width: 100%;
 	height: 40px;
-	padding: 0 ${getSpace(SpaceSize.XXL) * 2 + getSpace(SpaceSize.S)}px;
 	border-bottom: 1px solid ${Color.Grey90};
 	@media screen and (-webkit-min-device-pixel-ratio: 2) {
 		border-bottom-width: 0.5px;

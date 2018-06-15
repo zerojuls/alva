@@ -10,7 +10,7 @@ export interface BugReportProps {
 
 const StyledBugReport = styled.div`
 	justify-self: right;
-	margin-right: -${getSpace(SpaceSize.XXL) * 2 + getSpace(SpaceSize.S - SpaceSize.L)}px; // align to top right corner
+	margin: 0 ${getSpace(SpaceSize.S)}px;
 `;
 
 export const BugReport: React.StatelessComponent<BugReportProps> = props => (

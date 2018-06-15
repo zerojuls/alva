@@ -21,6 +21,7 @@ import * as MobxReact from 'mobx-react';
 import { PageListContainer } from './page-list/page-list-container';
 import { PatternListContainer } from './pattern-list';
 import { PreviewPaneWrapper } from './preview-pane-wrapper';
+import { ProjectSettingsContainer } from './project-settings-container';
 import { PropertyListContainer } from './property-list';
 import * as React from 'react';
 import { SplashScreenContainer } from './splash-screen-container';
@@ -123,7 +124,7 @@ export class App extends React.Component {
 								previewFrame={`http://localhost:${props.store.getServerPort()}/preview.html`}
 							/>
 
-							{props.store.getShowRightSidebar() && (
+							{props.store.getShowRightSidebar() !== null && (
 								<Resizeable
 									handleStyles={{ left: { zIndex: 1 } }}
 									defaultSize={{ width: 240, height: '100%' }}
@@ -149,7 +150,12 @@ export class App extends React.Component {
 											/>
 										)}
 										<PropertyPane>
+										{props.store.getShowRightSidebar() === Types.ShowRightSidebar.Properties && (
 											<PropertyListContainer />
+										)}
+										{props.store.getShowRightSidebar() === Types.ShowRightSidebar.ProjectSettings && (
+											<ProjectSettingsContainer />
+										)}
 										</PropertyPane>
 									</SideBar>
 								</Resizeable>

@@ -2,7 +2,8 @@ import * as AlvaUtil from '../../alva-util';
 import { BugReport, Chrome, CopySize, ViewSwitch } from '../../components';
 import { ServerMessageType } from '../../message';
 import * as MobxReact from 'mobx-react';
-import { ChromeSwitch } from './chrome-switch';
+import { ChromeLeftSwitch } from './chrome-left-switch';
+import { ChromeRightSwitch } from './chrome-right-switch';
 import * as React from 'react';
 import * as Sender from '../../message/client';
 import { ViewStore } from '../../store';
@@ -57,7 +58,7 @@ export const ChromeContainer = MobxReact.inject('store')(
 					});
 				}}
 			>
-				<ChromeSwitch />
+				<ChromeLeftSwitch />
 				<ViewSwitch
 					fontSize={CopySize.M}
 					justify="center"
@@ -67,16 +68,19 @@ export const ChromeContainer = MobxReact.inject('store')(
 					onRightClick={next}
 					title={page ? page.getName() : ''}
 				/>
-				<BugReport
-					title="Found a bug?"
-					onClick={() => {
-						Sender.send({
-							type: ServerMessageType.OpenExternalURL,
-							id: uuid.v4(),
-							payload: 'https://github.com/meetalva/alva/labels/type%3A%20bug'
-						});
-					}}
-				/>
+				<div style={{display: 'flex', justifyContent: 'flex-end', height: '100%', alignItems: 'center'}}>
+					<BugReport
+						title="Found a bug?"
+						onClick={() => {
+							Sender.send({
+								type: ServerMessageType.OpenExternalURL,
+								id: uuid.v4(),
+								payload: 'https://github.com/meetalva/alva/labels/type%3A%20bug'
+							});
+						}}
+					/>
+					<ChromeRightSwitch />
+				</div>
 				{props.children}
 			</Chrome>
 		);

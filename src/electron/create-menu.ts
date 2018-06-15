@@ -431,11 +431,21 @@ export function createMenu(ctx: MenuContext): void {
 				{
 					label: 'Show Properties',
 					type: 'checkbox',
-					checked: ctx.store.getShowRightSidebar(),
+					checked: ctx.store.getShowRightSidebar() === Types.ShowRightSidebar.Properties,
 					enabled: ctx.store.getActiveAppView() === Types.AlvaView.PageDetail,
 					accelerator: 'CmdOrCtrl+Alt+3',
 					click: (item, checked) => {
-						ctx.store.setShowRightSidebar(item.checked);
+						ctx.store.setShowRightSidebar(item.checked ? Types.ShowRightSidebar.Properties : null);
+					}
+				},
+				{
+					label: 'Show Project Settings',
+					type: 'checkbox',
+					checked: ctx.store.getShowRightSidebar() === Types.ShowRightSidebar.ProjectSettings,
+					enabled: ctx.store.getActiveAppView() === Types.AlvaView.PageDetail,
+					accelerator: 'CmdOrCtrl+Alt+4',
+					click: (item, checked) => {
+						ctx.store.setShowRightSidebar(item.checked ? Types.ShowRightSidebar.ProjectSettings : null);
 					}
 				},
 				{
