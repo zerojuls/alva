@@ -1,19 +1,6 @@
 import { ChromeContainer } from './chrome/chrome-container';
 import * as Sender from '../message/client';
-import {
-	ElementPane,
-	globalStyles,
-	IconRegistry,
-	Layout,
-	LayoutBorder,
-	LayoutDirection,
-	LayoutSide,
-	FixedArea,
-	MainArea,
-	PatternsPane,
-	PropertyPane,
-	SideBar
-} from '../components';
+import * as Components from '../components';
 import { ConnectPaneContainer } from './connect-pane-container';
 import { ElementList } from './element-list';
 import { ServerMessageType } from '../message';
@@ -22,6 +9,7 @@ import { PageListContainer } from './page-list/page-list-container';
 import { PatternListContainer } from './pattern-list';
 import { PreviewPaneWrapper } from './preview-pane-wrapper';
 import { ProjectSettingsContainer } from './project-settings-container';
+import { PropertiesSwitch } from './properties-switch';
 import { PropertyListContainer } from './property-list';
 import * as React from 'react';
 import { SplashScreenContainer } from './splash-screen-container';
@@ -31,7 +19,7 @@ import * as uuid from 'uuid';
 
 const Resizeable = require('re-resizable');
 
-globalStyles();
+Components.globalStyles();
 
 interface InjectedAppProps {
 	store: ViewStore;
@@ -48,11 +36,11 @@ export class App extends React.Component {
 		}
 
 		return (
-			<Layout direction={LayoutDirection.Column}>
-				<FixedArea top={0} right={0} left={0}>
+			<Components.Layout direction={Components.LayoutDirection.Column}>
+				<Components.FixedArea top={0} right={0} left={0}>
 					<ChromeContainer />
-				</FixedArea>
-				<MainArea>
+				</Components.FixedArea>
+				<Components.MainArea>
 					{props.store.getActiveAppView() === Types.AlvaView.SplashScreen && (
 						<SplashScreenContainer
 							onPrimaryButtonClick={() => {
@@ -80,13 +68,13 @@ export class App extends React.Component {
 									enable={{ right: true }}
 									minWidth={140}
 								>
-									<SideBar
-										side={LayoutSide.Left}
-										direction={LayoutDirection.Column}
-										border={LayoutBorder.Side}
+									<Components.SideBar
+										side={Components.LayoutSide.Left}
+										direction={Components.LayoutDirection.Column}
+										border={Components.LayoutBorder.Side}
 									>
 										<PageListContainer />
-									</SideBar>
+									</Components.SideBar>
 								</Resizeable>
 							)}
 							{props.store.getShowLeftSidebar() && (
@@ -96,14 +84,14 @@ export class App extends React.Component {
 									enable={{ right: true }}
 									minWidth={240}
 								>
-									<SideBar
-										side={LayoutSide.Left}
-										direction={LayoutDirection.Column}
-										border={LayoutBorder.Side}
+									<Components.SideBar
+										side={Components.LayoutSide.Left}
+										direction={Components.LayoutDirection.Column}
+										border={Components.LayoutBorder.Side}
 									>
-										<ElementPane>
+										<Components.ElementPane>
 											<ElementList />
-										</ElementPane>
+										</Components.ElementPane>
 
 										<Resizeable
 											handleStyles={{ top: { zIndex: 1 } }}
@@ -111,11 +99,11 @@ export class App extends React.Component {
 											enable={{ top: true }}
 											minHeight={240}
 										>
-											<PatternsPane>
+											<Components.PatternsPane>
 												<PatternListContainer />
-											</PatternsPane>
+											</Components.PatternsPane>
 										</Resizeable>
-									</SideBar>
+									</Components.SideBar>
 								</Resizeable>
 							)}
 							<PreviewPaneWrapper
@@ -124,18 +112,21 @@ export class App extends React.Component {
 								previewFrame={`http://localhost:${props.store.getServerPort()}/preview.html`}
 							/>
 
-							{props.store.getShowRightSidebar() !== null && (
+							{props.store.getShowRightSidebar() && (
 								<Resizeable
 									handleStyles={{ left: { zIndex: 1 } }}
 									defaultSize={{ width: 240, height: '100%' }}
 									enable={{ left: true }}
 									minWidth={240}
 								>
-									<SideBar
-										side={LayoutSide.Right}
-										direction={LayoutDirection.Column}
-										border={LayoutBorder.Side}
+									<Components.SideBar
+										side={Components.LayoutSide.Right}
+										direction={Components.LayoutDirection.Column}
+										border={Components.LayoutBorder.Side}
 									>
+										<div style={{ flexShrink: 0, height: 40 }}>
+											<PropertiesSwitch />
+										</div>
 										{props.store.getPatternLibraryState() ===
 											Types.PatternLibraryState.Pristine && (
 											<ConnectPaneContainer
@@ -149,22 +140,22 @@ export class App extends React.Component {
 												}
 											/>
 										)}
-										<PropertyPane>
-										{props.store.getShowRightSidebar() === Types.ShowRightSidebar.Properties && (
-											<PropertyListContainer />
-										)}
-										{props.store.getShowRightSidebar() === Types.ShowRightSidebar.ProjectSettings && (
-											<ProjectSettingsContainer />
-										)}
-										</PropertyPane>
-									</SideBar>
+										<Components.PropertyPane>
+											{props.store.getRightSidebarTab() ===
+												Types.RightSidebarTab.Properties && <PropertyListContainer />}
+											{props.store.getRightSidebarTab() ===
+												Types.RightSidebarTab.ProjectSettings && (
+												<ProjectSettingsContainer />
+											)}
+										</Components.PropertyPane>
+									</Components.SideBar>
 								</Resizeable>
 							)}
 						</React.Fragment>
 					)}
-				</MainArea>
-				<IconRegistry />
-			</Layout>
+				</Components.MainArea>
+				<Components.IconRegistry />
+			</Components.Layout>
 		);
 	}
 }

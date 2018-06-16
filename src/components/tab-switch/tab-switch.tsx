@@ -34,13 +34,15 @@ const StyledTabSwitch = styled.div`
 	align-items: center;
 	justify-content: center;
 
-	width: ${(props: TabSwitchProps) =>
-		props.type === TabSwitchType.Tab ? '50%' : 'auto'};
+	width: ${(props: TabSwitchProps) => (props.type === TabSwitchType.Tab ? '50%' : 'auto')};
 
 	border-bottom: ${(props: TabSwitchProps) =>
 		props.type === TabSwitchType.Tab ? '3px solid' : 'none'};
 	border-bottom-color: ${(props: TabSwitchProps) =>
 		props.active === TabSwitchState.Active ? Color.Blue20 : 'transparent'};
+
+	user-select: none;
+	cursor: default;
 
 	&:active {
 		color: ${Color.Grey20};

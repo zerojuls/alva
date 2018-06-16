@@ -328,7 +328,7 @@ export interface SerializedElementAction {
 	storePropertyId: string;
 }
 
-export enum ShowRightSidebar {
-	Properties,
-	ProjectSettings
+export enum RightSidebarTab {
+	Properties = 'properties',
+	ProjectSettings = 'project-settings'
 }

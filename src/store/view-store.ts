@@ -57,13 +57,16 @@ export class ViewStore {
 
 	@Mobx.observable private project: Model.Project;
 
+	@Mobx.observable
+	private rightSidebarTab: Types.RightSidebarTab = Types.RightSidebarTab.Properties;
+
 	private savedProjects: Types.SavedProject[] = [];
 
 	@Mobx.observable private showLeftSidebar: boolean = true;
 
 	@Mobx.observable private showPages: boolean = true;
 
-	@Mobx.observable private showRightSidebar: Types.ShowRightSidebar | null = Types.ShowRightSidebar.Properties;
+	@Mobx.observable private showRightSidebar: boolean = true;
 
 	@Mobx.observable private serverPort: number;
 
@@ -628,7 +631,6 @@ export class ViewStore {
 		return this.project.getElements().find(e => e.getNameEditable());
 	}
 
-	@Mobx.action
 	public getNextPage(): Model.Page | undefined {
 		const page = this.getCurrentPage();
 
@@ -636,13 +638,18 @@ export class ViewStore {
 			return;
 		}
 
-		const index = this.project.getPageIndex(page);
+		const nextIndex = this.project.getPageIndex(page) + 1;
+		const pages = this.project.getPages();
 
-		if (typeof index !== 'number') {
+		if (typeof nextIndex !== 'number' || Number.isNaN(nextIndex)) {
 			return;
 		}
 
-		return this.project.getPages()[index + 1];
+		if (nextIndex < 0 || nextIndex > pages.length - 1) {
+			return;
+		}
+
+		return pages[nextIndex];
 	}
 
 	public getPageById(id: string): Model.Page | undefined {
@@ -695,7 +702,6 @@ export class ViewStore {
 		return this.app.getSearchTerm();
 	}
 
-	@Mobx.action
 	public getPreviousPage(): Model.Page | undefined {
 		const page = this.getCurrentPage();
 
@@ -703,13 +709,18 @@ export class ViewStore {
 			return;
 		}
 
-		const index = this.project.getPageIndex(page);
+		const previousIndex = this.project.getPageIndex(page) - 1;
+		const pages = this.project.getPages();
 
-		if (typeof index !== 'number') {
+		if (typeof previousIndex !== 'number' || Number.isNaN(previousIndex)) {
 			return;
 		}
 
-		return this.project.getPages()[index - 1];
+		if (previousIndex < 0 || previousIndex > pages.length - 1) {
+			return;
+		}
+
+		return pages[previousIndex];
 	}
 
 	public getProject(): Model.Project {
@@ -925,16 +936,24 @@ export class ViewStore {
 		return this.showLeftSidebar;
 	}
 
-	public setShowLeftSidebar(show: boolean): void {
-		this.showLeftSidebar = show;
+	public setShowLeftSidebar(showLeftSidebar: boolean): void {
+		this.showLeftSidebar = showLeftSidebar;
 	}
 
-	public getShowRightSidebar(): Types.ShowRightSidebar | null {
+	public getShowRightSidebar(): boolean {
 		return this.showRightSidebar;
 	}
 
-	public setShowRightSidebar(pane: Types.ShowRightSidebar | null): void {
-		this.showRightSidebar = pane;
+	public setShowRightSidebar(showRightSidebar: boolean): void {
+		this.showRightSidebar = showRightSidebar;
+	}
+
+	public getRightSidebarTab(): Types.RightSidebarTab {
+		return this.rightSidebarTab;
+	}
+
+	public setRightSidebarTab(sidebarTab: Types.RightSidebarTab): void {
+		this.rightSidebarTab = sidebarTab;
 	}
 
 	public getShowPages(): boolean {

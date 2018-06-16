@@ -1,7 +1,6 @@
-import { getSpace, IconName, SpaceSize, TabSwitchState } from '../../components';
+import * as Components from '../../components';
 import * as MobxReact from 'mobx-react';
 import * as React from 'react';
-import { TabSwitch, TabSwitchType } from '../../components';
 import { ViewStore } from '../../store';
 
 @MobxReact.inject('store')
@@ -11,20 +10,45 @@ export class ChromeLeftSwitch extends React.Component {
 		const { store } = this.props as { store: ViewStore };
 
 		return (
-			<div style={{ display: 'flex', height: '100%', marginLeft: getSpace(SpaceSize.XXXL + SpaceSize.XXL) }}>
-				<TabSwitch
-					icon={IconName.Page}
-					title={'Pages'}
-					type={TabSwitchType.Toggle}
-					active={store.getShowPages() ? TabSwitchState.Active : TabSwitchState.Default}
+			<div
+				style={{
+					display: 'flex',
+					height: '100%',
+					marginLeft: Components.getSpace(Components.SpaceSize.XXXL + Components.SpaceSize.XXL)
+				}}
+			>
+				<Components.TabSwitch
+					icon={Components.IconName.Page}
+					title="Pages"
+					type={Components.TabSwitchType.Toggle}
+					active={
+						store.getShowPages()
+							? Components.TabSwitchState.Active
+							: Components.TabSwitchState.Default
+					}
 					onClick={() => store.setShowPages(!store.getShowPages())}
 				/>
-				<TabSwitch
-					icon={IconName.Element}
-					title={'Elements & Library'}
-					type={TabSwitchType.Toggle}
-					active={store.getShowLeftSidebar() ? TabSwitchState.Active : TabSwitchState.Default}
+				<Components.TabSwitch
+					icon={Components.IconName.Element}
+					title="Elements & Library"
+					type={Components.TabSwitchType.Toggle}
+					active={
+						store.getShowLeftSidebar()
+							? Components.TabSwitchState.Active
+							: Components.TabSwitchState.Default
+					}
 					onClick={() => store.setShowLeftSidebar(!store.getShowLeftSidebar())}
+				/>
+				<Components.TabSwitch
+					icon={Components.IconName.Robo}
+					title="Properties"
+					type={Components.TabSwitchType.Toggle}
+					active={
+						store.getShowRightSidebar()
+							? Components.TabSwitchState.Active
+							: Components.TabSwitchState.Default
+					}
+					onClick={() => store.setShowRightSidebar(!store.getShowRightSidebar())}
 				/>
 			</div>
 		);
