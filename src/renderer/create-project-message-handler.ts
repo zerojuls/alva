@@ -1,6 +1,5 @@
 import * as Message from '../message';
 import * as Model from '../model';
-import * as Sender from '../sender/client';
 import { ViewStore } from '../store';
 import * as Types from '../types';
 import * as uuid from 'uuid';
@@ -15,133 +14,132 @@ export function createProjectMessageHandler({
 	app: Model.AlvaApp;
 	history: Model.EditHistory;
 	store: ViewStore;
-}): ProjectMessageHandler {
-	// tslint:disable-next-line:cyclomatic-complexity
-	return async function projectMessagehandler(message: Message.Message): Promise<void> {
-		const project = store.getProject();
+}): void {
+	const project = store.getProject();
+	const sender = store.getSender();
 
-		if (!project) {
+	if (!project) {
+		return;
+	}
+
+	sender.match<Message.CreateNewPage>(Message.MessageType.CreateNewPage, () => {
+		const page = store.executePageAddNew();
+
+		if (!page) {
 			return;
 		}
 
-		switch (message.type) {
-			case Message.MessageType.CreateNewPage: {
-				const page = store.executePageAddNew();
+		store.getProject().setActivePage(page);
+		page.setNameState(Types.EditableTitleState.Editing);
+	});
 
-				if (!page) {
-					return;
-				}
+	sender.match<Message.ConnectPatternLibraryResponse>(
+		Message.MessageType.ConnectPatternLibraryResponse,
+		message => {
+			const analysis = message.payload.analysis;
 
-				store.getProject().setActivePage(page);
-				page.setNameState(Types.EditableTitleState.Editing);
+			const library = Model.PatternLibrary.create({
+				id: uuid.v4(),
+				name: analysis.name,
+				origin: Types.PatternLibraryOrigin.UserProvided,
+				patternProperties: [],
+				patterns: [],
+				bundle: analysis.bundle,
+				bundleId: analysis.id,
+				description: analysis.description,
+				state: Types.PatternLibraryState.Connected
+			});
 
-				break;
-			}
-			case Message.MessageType.ConnectPatternLibraryResponse: {
-				const analysis = message.payload.analysis;
+			library.import(analysis, { project });
 
-				const library = Model.PatternLibrary.create({
-					id: uuid.v4(),
-					name: analysis.name,
-					origin: Types.PatternLibraryOrigin.UserProvided,
-					patternProperties: [],
-					patterns: [],
-					bundle: analysis.bundle,
-					bundleId: analysis.id,
-					description: analysis.description,
-					state: Types.PatternLibraryState.Connected
-				});
+			project.addPatternLibrary(library);
+			store.getApp().setRightSidebarTab(Types.RightSidebarTab.ProjectSettings);
+			store.commit();
 
-				library.import(analysis, { project });
-
-				project.addPatternLibrary(library);
-				store.getApp().setRightSidebarTab(Types.RightSidebarTab.ProjectSettings);
-				store.commit();
-
-				Sender.send({
-					id: uuid.v4(),
-					payload: {
-						id: library.getId(),
-						path: message.payload.path
-					},
-					type: Message.MessageType.ConnectedPatternLibraryNotification
-				});
-
-				break;
-			}
-			case Message.MessageType.UpdatePatternLibraryResponse: {
-				const library = project.getPatternLibraryById(message.payload.previousLibraryId);
-
-				if (!library) {
-					return;
-				}
-
-				library.import(message.payload.analysis, { project });
-				store.commit();
-
-				Sender.send({
-					id: uuid.v4(),
-					payload: {
-						id: library.getId(),
-						path: message.payload.path
-					},
-					type: Message.MessageType.ConnectedPatternLibraryNotification
-				});
-
-				break;
-			}
-			case Message.MessageType.CheckLibraryResponse: {
-				message.payload
-					.map(check => ({ library: project.getPatternLibraryById(check.id), check }))
-					.forEach(({ library, check }) => {
-						if (typeof library === 'undefined') {
-							return;
-						}
-						library.setState(
-							check.connected
-								? Types.PatternLibraryState.Connected
-								: Types.PatternLibraryState.Disconnected
-						);
-					});
-				break;
-			}
-			case Message.MessageType.SetPane: {
-				app.setPane(message.payload.pane, message.payload.visible);
-				break;
-			}
-			case Message.MessageType.ChangeUserStore: {
-				project.getUserStore().sync(message);
-				break;
-			}
-			case Message.MessageType.SelectElement: {
-				if (!message.payload.element) {
-					return;
-				}
-
-				const el = Model.Element.from(message.payload.element, { project });
-				const previousEl = project.getElementById(el.getId());
-
-				if (!previousEl) {
-					return;
-				}
-
-				store.setSelectedElement(previousEl);
-				break;
-			}
-			case Message.MessageType.HighlightElement: {
-				if (!message.payload.element) {
-					return;
-				}
-
-				const el = Model.Element.from(message.payload.element, { project });
-				const previousEl = project.getElementById(el.getId());
-
-				if (!previousEl) {
-					return;
-				}
-
-				store.setHighlightedElement(previousEl, { flat: !store.getMetaDown() });
-			}
+			store.send({
+				id: uuid.v4(),
+				payload: {
+					id: library.getId(),
+					path: message.payload.path
+				},
+				type: Message.MessageType.ConnectedPatternLibraryNotification
+			});
 		}
-	};
+	);
+
+	sender.match<Message.UpdatePatternLibraryResponse>(
+		Message.MessageType.UpdatePatternLibraryResponse,
+		message => {
+			const library = project.getPatternLibraryById(message.payload.previousLibraryId);
+
+			if (!library) {
+				return;
+			}
+
+			library.import(message.payload.analysis, { project });
+			store.commit();
+
+			store.send({
+				id: uuid.v4(),
+				payload: {
+					id: library.getId(),
+					path: message.payload.path
+				},
+				type: Message.MessageType.ConnectedPatternLibraryNotification
+			});
+		}
+	);
+
+	sender.match<Message.CheckLibraryResponse>(Message.MessageType.CheckLibraryResponse, message => {
+		message.payload
+			.map(check => ({ library: project.getPatternLibraryById(check.id), check }))
+			.forEach(({ library, check }) => {
+				if (typeof library === 'undefined') {
+					return;
+				}
+				library.setState(
+					check.connected
+						? Types.PatternLibraryState.Connected
+						: Types.PatternLibraryState.Disconnected
+				);
+			});
+	});
+
+	sender.match<Message.SetPane>(Message.MessageType.SetPane, message => {
+		app.setPane(message.payload.pane, message.payload.visible);
+	});
+
+	sender.match<Message.ChangeUserStore>(Message.MessageType.ChangeUserStore, message => {
+		project.getUserStore().sync(message);
+	});
+
+	sender.match<Message.SelectElement>(Message.MessageType.SelectElement, message => {
+		if (!message.payload.element) {
+			return;
+		}
+
+		const el = Model.Element.from(message.payload.element, { project });
+		const previousEl = project.getElementById(el.getId());
+
+		if (!previousEl) {
+			return;
+		}
+
+		store.setSelectedElement(previousEl);
+	});
+
+	sender.match<Message.HighlightElement>(Message.MessageType.HighlightElement, message => {
+		if (!message.payload.element) {
+			return;
+		}
+
+		const el = Model.Element.from(message.payload.element, { project });
+		const previousEl = project.getElementById(el.getId());
+
+		if (!previousEl) {
+			return;
+		}
+
+		store.setHighlightedElement(previousEl, { flat: !store.getMetaDown() });
+	});
 }

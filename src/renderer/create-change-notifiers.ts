@@ -1,4 +1,3 @@
-import * as Sender from '../sender/client';
 import * as Message from '../message';
 import * as Mobx from 'mobx';
 import * as Model from '../model';
@@ -17,7 +16,7 @@ export function createChangeNotifiers({ app, store }: NotifierContext): void {
 	};
 
 	Mobx.autorun(() => {
-		Sender.send({
+		store.send({
 			id: uuid.v4(),
 			payload: {
 				pages: store.getPages().map(p => p.toJSON())
@@ -29,7 +28,7 @@ export function createChangeNotifiers({ app, store }: NotifierContext): void {
 	Mobx.autorun(() => {
 		const elements = store.getElements().map(e => e.toJSON());
 
-		Sender.send({
+		store.send({
 			id: uuid.v4(),
 			payload: { elements },
 			type: Message.MessageType.ChangeElements
@@ -39,7 +38,7 @@ export function createChangeNotifiers({ app, store }: NotifierContext): void {
 	Mobx.autorun(() => {
 		const elementContents = store.getElementContents().map(e => e.toJSON());
 
-		Sender.send({
+		store.send({
 			id: uuid.v4(),
 			payload: { elementContents },
 			type: Message.MessageType.ChangeElementContents
@@ -49,7 +48,7 @@ export function createChangeNotifiers({ app, store }: NotifierContext): void {
 	Mobx.autorun(() => {
 		const elementActions = store.getElementActions().map(e => e.toJSON());
 
-		Sender.send({
+		store.send({
 			id: uuid.v4(),
 			payload: { elementActions },
 			type: Message.MessageType.ChangeElementActions
@@ -59,7 +58,7 @@ export function createChangeNotifiers({ app, store }: NotifierContext): void {
 	Mobx.autorun(() => {
 		const metaDown = store.getMetaDown();
 
-		Sender.send({
+		store.send({
 			id: uuid.v4(),
 			payload: {
 				metaDown
@@ -71,7 +70,7 @@ export function createChangeNotifiers({ app, store }: NotifierContext): void {
 	Mobx.autorun(() => {
 		const patternLibraries = store.getPatternLibraries();
 
-		Sender.send({
+		store.send({
 			id: uuid.v4(),
 			payload: {
 				patternLibraries: patternLibraries.map(l => l.toJSON())
@@ -79,7 +78,7 @@ export function createChangeNotifiers({ app, store }: NotifierContext): void {
 			type: Message.MessageType.ChangePatternLibraries
 		});
 
-		Sender.send({
+		store.send({
 			id: uuid.v4(),
 			payload: {
 				libraries: patternLibraries
@@ -91,7 +90,7 @@ export function createChangeNotifiers({ app, store }: NotifierContext): void {
 	}, opts);
 
 	Mobx.autorun(() => {
-		Sender.send({
+		store.send({
 			id: uuid.v4(),
 			payload: {
 				app: store.getApp().toJSON()

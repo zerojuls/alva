@@ -1,6 +1,6 @@
-import * as Sender from '../sender/client';
+import { Sender } from '../sender/client';
 import { debounce, isEqual } from 'lodash';
-import { MessageType } from '../message';
+import * as Message from '../message';
 import * as Mobx from 'mobx';
 import * as Model from '../model';
 import * as Types from '../types';
@@ -10,6 +10,7 @@ import * as uuid from 'uuid';
 export interface ViewStoreInit {
 	app: Model.AlvaApp;
 	history: Model.EditHistory;
+	sender: Sender;
 }
 
 export enum ClipBoardType {
@@ -58,11 +59,14 @@ export class ViewStore {
 
 	@Mobx.observable private serverPort: number;
 
+	private sender: Sender;
+
 	public constructor(init: ViewStoreInit) {
 		this.app = init.app;
 		this.editHistory = init.history;
 
 		this.save = debounce(this.save, 1000);
+		this.sender = init.sender;
 	}
 
 	@Mobx.action
@@ -98,8 +102,8 @@ export class ViewStore {
 
 	@Mobx.action
 	public connectPatternLibrary(library?: Model.PatternLibrary): void {
-		Sender.send({
-			type: MessageType.ConnectPatternLibraryRequest,
+		this.sender.send({
+			type: Message.MessageType.ConnectPatternLibraryRequest,
 			id: uuid.v4(),
 			payload: {
 				library: library ? library.getId() : undefined
@@ -694,11 +698,15 @@ export class ViewStore {
 
 	@Mobx.action
 	public requestContextMenu(payload: Types.ContextMenuRequestPayload): void {
-		Sender.send({
+		this.sender.send({
 			id: uuid.v4(),
-			type: MessageType.ContextMenuRequest,
+			type: Message.MessageType.ContextMenuRequest,
 			payload
 		});
+	}
+
+	public send(message: Message.Message): void {
+		this.sender.send(message);
 	}
 
 	@Mobx.action
@@ -719,10 +727,10 @@ export class ViewStore {
 				project: serializedProject
 			};
 
-			Sender.send({
+			this.sender.send({
 				id: uuid.v4(),
 				payload,
-				type: MessageType.Save
+				type: Message.MessageType.Save
 			});
 		}
 	}
@@ -890,12 +898,16 @@ export class ViewStore {
 	}
 
 	public updatePatternLibrary(library: Model.PatternLibrary): void {
-		Sender.send({
-			type: MessageType.UpdatePatternLibraryRequest,
+		this.sender.send({
+			type: Message.MessageType.UpdatePatternLibraryRequest,
 			payload: {
 				id: library.getId()
 			},
 			id: uuid.v4()
 		});
+	}
+
+	public getSender(): Sender {
+		return this.sender;
 	}
 }

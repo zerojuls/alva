@@ -12,6 +12,7 @@ import * as Http from 'http';
 import * as Message from '../message';
 import * as WS from 'ws';
 import { isMessage } from '../sender/is-message';
+import * as RendererDocument from '../renderer/renderer-document';
 import { Sender } from '../sender/server';
 
 export interface ServerOptions {
@@ -39,7 +40,7 @@ export class AlvaServer extends EventEmitter {
 		this.server = init.server;
 		this.webSocketServer = init.webSocketServer;
 
-		this.app.get('/', (_, res) => res.send('ok'));
+		this.app.get('/', (_, res) => res.send(RendererDocument.rendererDocument()));
 
 		this.app.get('/preview.html', createPreviewRoute({ sender: this.options.sender }));
 

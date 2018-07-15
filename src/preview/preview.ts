@@ -7,7 +7,7 @@ import * as Message from '../message';
 import * as Mobx from 'mobx';
 import * as Model from '../model';
 import { PreviewStore, SyntheticComponents } from './preview-store';
-import { Sender } from '../sender/preview';
+import { Sender } from '../sender/client';
 import * as Types from '../types';
 import * as uuid from 'uuid';
 
@@ -19,7 +19,8 @@ export interface Renderer<T> {
 declare global {
 	interface Window {
 		// tslint:disable-next-line:no-any
-		renderer: Renderer<any>;
+		previewRenderer: Renderer<any>;
+
 		rpc: {
 			getDocumentSize(): Promise<{ width: number; height: number }>;
 			// tslint:disable-next-line:no-any
@@ -28,7 +29,7 @@ declare global {
 	}
 }
 
-function main(): void {
+async function main(): Promise<void> {
 	const data = getInitialData();
 
 	if (!data) {
@@ -47,7 +48,7 @@ function main(): void {
 		mode,
 		components,
 		project,
-		synthetics: window.renderer.getSynthetics(),
+		synthetics: window.previewRenderer.getSynthetics(),
 		selectionArea: new ElementArea(),
 		highlightArea: new ElementArea()
 	});
@@ -78,7 +79,7 @@ function main(): void {
 	});
 
 	// (3) Render the preview application
-	window.renderer.render(store, document.getElementById('preview') as HTMLElement);
+	window.previewRenderer.render(store, document.getElementById('preview') as HTMLElement);
 
 	// (4) Connect to the Alva server for updates
 	// - when mode is "live", used for editable preview

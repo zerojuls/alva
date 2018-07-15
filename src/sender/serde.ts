@@ -6,6 +6,15 @@ import * as Message from '../message';
 const TYPES = Object.values(Message.MessageType);
 const OVERTURE_LENGTH = 8;
 
+export interface Serializable {
+	id: string;
+	senderId?: string;
+	transactionId?: string;
+	type: string;
+	// tslint:disable-next-line:no-any
+	payload: any;
+}
+
 export enum TechnicalMessageType {
 	Unknown = 'unknown',
 	Invalid = 'invalid'
@@ -19,10 +28,16 @@ export enum MessageHeaderStatus {
 export interface MessageHeader {
 	type: Message.MessageType | TechnicalMessageType;
 	status: MessageHeaderStatus;
+	senderId?: string;
+	transactionId?: string;
 }
 
-export function serialize(message: Message.Message): string {
-	const headerData = JSON.stringify({ type: message.type });
+export function serialize<T extends Serializable>(message: T): string {
+	const headerData = JSON.stringify({
+		type: message.type,
+		senderId: message.senderId,
+		transactionId: message.transactionId
+	});
 	const headerLength = headerData.length.toString();
 
 	if (headerLength.length > OVERTURE_LENGTH) {

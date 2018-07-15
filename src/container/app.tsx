@@ -1,5 +1,4 @@
 import { ChromeContainer } from './chrome/chrome-container';
-import * as Sender from '../sender/client';
 import * as Components from '../components';
 import { ConnectPaneContainer } from './connect-pane-container';
 import { ElementList } from './element-list';
@@ -17,7 +16,7 @@ import { ViewStore } from '../store';
 import * as Types from '../types';
 import * as uuid from 'uuid';
 
-const Resizeable = require('re-resizable');
+const Resizeable = require('re-resizable').default;
 
 Components.globalStyles();
 
@@ -45,14 +44,14 @@ export class App extends React.Component {
 					{props.store.getActiveAppView() === Types.AlvaView.SplashScreen && (
 						<SplashScreenContainer
 							onPrimaryButtonClick={() => {
-								Sender.send({
+								props.store.send({
 									type: MessageType.CreateNewFileRequest,
 									id: uuid.v4(),
 									payload: undefined
 								});
 							}}
 							onSecondaryButtonClick={() => {
-								Sender.send({
+								props.store.send({
 									type: MessageType.OpenFileRequest,
 									id: uuid.v4(),
 									payload: undefined
@@ -136,7 +135,7 @@ export class App extends React.Component {
 											<ConnectPaneContainer
 												onPrimaryButtonClick={() => props.store.connectPatternLibrary()}
 												onSecondaryButtonClick={() =>
-													Sender.send({
+													props.store.send({
 														type: MessageType.OpenExternalURL,
 														id: uuid.v4(),
 														payload: 'http://meetalva.github.io/example/example.alva'

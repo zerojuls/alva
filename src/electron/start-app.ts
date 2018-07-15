@@ -61,7 +61,7 @@ export async function startApp(ctx: AppContext): Promise<{ emitter: Events.Event
 
 	Electron.app.on('activate', async () => {
 		if (process.platform === 'darwin' && !ctx.win) {
-			ctx.win = (await createWindow()).window;
+			ctx.win = (await createWindow({ port: ctx.port as number })).window;
 		}
 	});
 
@@ -71,7 +71,7 @@ export async function startApp(ctx: AppContext): Promise<{ emitter: Events.Event
 	if (ctx.win) {
 		ctx.win.reload();
 	} else {
-		ctx.win = (await createWindow()).window;
+		ctx.win = (await createWindow({ port: ctx.port as number })).window;
 	}
 
 	startUpdater();

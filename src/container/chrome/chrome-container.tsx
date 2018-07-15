@@ -5,7 +5,7 @@ import { MessageType } from '../../message';
 import * as MobxReact from 'mobx-react';
 import { Page } from '../../model';
 import * as React from 'react';
-import * as Sender from '../../sender/client';
+import * as Types from '../../types';
 import { ViewStore } from '../../store';
 import * as uuid from 'uuid';
 
@@ -17,6 +17,11 @@ export interface InjectedChromeContainerProps {
 export const ChromeContainer = MobxReact.inject('store')(
 	MobxReact.observer((props): JSX.Element | null => {
 		const { store } = props as InjectedChromeContainerProps;
+
+		if (store.getActiveAppView() === Types.AlvaView.SplashScreen) {
+			return null;
+		}
+
 		const project = store.getProject();
 
 		if (!project) {
@@ -40,7 +45,7 @@ export const ChromeContainer = MobxReact.inject('store')(
 		return (
 			<Chrome
 				onDoubleClick={() => {
-					Sender.send({
+					store.send({
 						type: MessageType.Maximize,
 						id: uuid.v4(),
 						payload: undefined
@@ -61,7 +66,7 @@ export const ChromeContainer = MobxReact.inject('store')(
 				<BugReport
 					title="Found a bug?"
 					onClick={() => {
-						Sender.send({
+						store.send({
 							type: MessageType.OpenExternalURL,
 							id: uuid.v4(),
 							payload: 'https://github.com/meetalva/alva/labels/type%3A%20bug'

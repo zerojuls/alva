@@ -1,7 +1,6 @@
-import * as Sender from '../../sender/client';
 import * as Component from '../../components';
 import { EventHandlerPropertyView } from './event-handler-property-view';
-import { MessageType } from '../../message';
+import * as Message from '../../message';
 import * as MobxReact from 'mobx-react';
 import { ElementProperty, PatternEnumProperty } from '../../model';
 import * as React from 'react';
@@ -98,20 +97,22 @@ export class PropertyListItem extends React.Component<PropertyListItemProps> {
 						onChooseClick={() => {
 							const transactionId = uuid.v4();
 
-							Sender.receive(message => {
-								if (
-									message.type === MessageType.AssetReadResponse &&
-									message.id === transactionId
-								) {
-									property.setValue(message.payload);
-									props.store.commit();
-								}
-							});
+							props.store
+								.getSender()
+								.match<Message.AssetReadResponse>(
+									Message.MessageType.AssetReadResponse,
+									message => {
+										if (message.id === transactionId) {
+											property.setValue(message.payload);
+											props.store.commit();
+										}
+									}
+								);
 
-							Sender.send({
+							props.store.send({
 								id: transactionId,
 								payload: undefined,
-								type: MessageType.AssetReadRequest
+								type: Message.MessageType.AssetReadRequest
 							});
 						}}
 						placeholder="Or enter URL"
