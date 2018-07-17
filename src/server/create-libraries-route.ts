@@ -1,5 +1,4 @@
 import * as Express from 'express';
-import { ProjectRequestResponsePair, MessageType } from '../message';
 import { Sender } from '../sender/server';
 import * as Model from '../model';
 import * as Path from 'path';
@@ -15,13 +14,13 @@ export function createLibrariesRoute(options: LibrariesRouteOptions): Express.Re
 		req: Express.Request,
 		res: Express.Response
 	): Promise<void> {
-		const projectResponse = await options.sender.request<ProjectRequestResponsePair>(
+		const projectResponse = await options.sender.request<Types.ProjectRequestResponsePair>(
 			{
 				id: uuid.v4(),
-				type: MessageType.ProjectRequest,
+				type: Types.MessageType.ProjectRequest,
 				payload: undefined
 			},
-			MessageType.ProjectResponse
+			Types.MessageType.ProjectResponse
 		);
 
 		if (projectResponse.payload.status === Types.ProjectStatus.None) {

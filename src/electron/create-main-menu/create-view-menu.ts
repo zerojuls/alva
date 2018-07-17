@@ -1,5 +1,4 @@
 import * as Electron from 'electron';
-import * as Message from '../../message';
 import * as Model from '../../model';
 import { Sender } from '../../sender/server';
 import * as Types from '../../types';
@@ -25,7 +24,7 @@ export function createViewMenu(
 				click: (item: Electron.MenuItem, focusedWindow: Electron.BrowserWindow) => {
 					injection.sender.send({
 						id: uuid.v4(),
-						type: Message.MessageType.Reload,
+						type: Types.MessageType.Reload,
 						payload: undefined
 					});
 				}
@@ -36,7 +35,7 @@ export function createViewMenu(
 				click: (item: Electron.MenuItem, focusedWindow: Electron.BrowserWindow) => {
 					injection.sender.send({
 						id: uuid.v4(),
-						type: Message.MessageType.Reload,
+						type: Types.MessageType.Reload,
 						payload: {
 							forced: true
 						}
@@ -68,7 +67,7 @@ export function createViewMenu(
 							payload: {
 								id: previousPage.getId()
 							},
-							type: Message.MessageType.ActivatePage
+							type: Types.MessageType.ActivatePage
 						});
 					}
 				}
@@ -86,7 +85,7 @@ export function createViewMenu(
 							payload: {
 								id: nextPage.getId()
 							},
-							type: Message.MessageType.ActivatePage
+							type: Types.MessageType.ActivatePage
 						});
 					}
 				}
@@ -107,7 +106,7 @@ export function createViewMenu(
 							pane: Types.AppPane.PagesPane,
 							visible: !app.getPanes().has(Types.AppPane.PagesPane)
 						},
-						type: Message.MessageType.SetPane
+						type: Types.MessageType.SetPane
 					});
 				}
 			},
@@ -124,7 +123,7 @@ export function createViewMenu(
 							pane: Types.AppPane.ElementsPane,
 							visible: !app.getPanes().has(Types.AppPane.ElementsPane)
 						},
-						type: Message.MessageType.SetPane
+						type: Types.MessageType.SetPane
 					});
 				}
 			},
@@ -141,7 +140,7 @@ export function createViewMenu(
 							pane: Types.AppPane.PropertiesPane,
 							visible: !app.getPanes().has(Types.AppPane.PropertiesPane)
 						},
-						type: Message.MessageType.SetPane
+						type: Types.MessageType.SetPane
 					});
 				}
 			},

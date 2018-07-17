@@ -45,6 +45,10 @@ export class Page {
 
 	@Mobx.computed
 	private get active(): boolean {
+		if (!this.project) {
+			return false;
+		}
+
 		return (
 			this.project
 				.getUserStore()
@@ -54,6 +58,10 @@ export class Page {
 	}
 
 	private set active(active: boolean) {
+		if (!this.project) {
+			return;
+		}
+
 		if (active) {
 			this.project
 				.getUserStore()
@@ -270,8 +278,10 @@ export class Page {
 		};
 	}
 
-	public update(b: Page): void {
+	public update(b: Types.SerializedPage): void {
 		this.active = b.active;
+		this.focused = b.focused;
+		this.id = b.id;
 		this.name = b.name;
 		this.rootId = b.rootId;
 	}

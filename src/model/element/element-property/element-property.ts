@@ -41,14 +41,17 @@ export class ElementProperty {
 		serialized: Types.SerializedElementProperty,
 		context: ElementPropertyContext
 	): ElementProperty {
-		return new ElementProperty(
-			{
-				id: serialized.id,
-				patternPropertyId: serialized.patternPropertyId,
-				setDefault: serialized.setDefault,
-				value: serialized.value
-			},
-			context
+		return Mobx.untracked(
+			() =>
+				new ElementProperty(
+					{
+						id: serialized.id,
+						patternPropertyId: serialized.patternPropertyId,
+						setDefault: serialized.setDefault,
+						value: serialized.value
+					},
+					context
+				)
 		);
 	}
 
@@ -153,7 +156,7 @@ export class ElementProperty {
 	}
 
 	@Mobx.action
-	public update(b: ElementProperty): void {
+	public update(b: Types.SerializedElementProperty): void {
 		this.id = b.id;
 		this.patternPropertyId = b.patternPropertyId;
 		this.setDefault = b.setDefault;

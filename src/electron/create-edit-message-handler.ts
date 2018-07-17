@@ -1,5 +1,4 @@
 import * as Clipboard from './clipboard';
-import * as Message from '../message';
 import { requestProject } from './request-project';
 import * as Types from '../types';
 import * as uuid from 'uuid';
@@ -12,11 +11,11 @@ import {
 export async function createEditMessageHandler(
 	ctx: ServerMessageHandlerContext,
 	injection: ServerMessageHandlerInjection
-): Promise<(message: Message.Message) => Promise<void>> {
-	return async function editMessageHandler(message: Message.Message): Promise<void> {
+): Promise<(message: Types.Message) => Promise<void>> {
+	return async function editMessageHandler(message: Types.Message): Promise<void> {
 		switch (message.type) {
-			case Message.MessageType.Cut:
-			case Message.MessageType.Copy: {
+			case Types.MessageType.Cut:
+			case Types.MessageType.Copy: {
 				const project = await requestProject(injection.sender);
 				const focusedItemType = project.getFocusedItemType();
 				const focusedItem = project.getFocusedItem();
@@ -33,8 +32,8 @@ export async function createEditMessageHandler(
 
 				break;
 			}
-			case Message.MessageType.CutElement:
-			case Message.MessageType.CopyElement: {
+			case Types.MessageType.CutElement:
+			case Types.MessageType.CopyElement: {
 				const project = await requestProject(injection.sender);
 				const element = project.getElementById(message.payload);
 
@@ -50,7 +49,7 @@ export async function createEditMessageHandler(
 
 				break;
 			}
-			case Message.MessageType.Paste: {
+			case Types.MessageType.Paste: {
 				const clipboard = Clipboard.getClipboard();
 
 				if (!clipboard) {
@@ -67,7 +66,7 @@ export async function createEditMessageHandler(
 					case Types.ItemType.Element:
 						injection.sender.send({
 							id: uuid.v4(),
-							type: Message.MessageType.PasteElement,
+							type: Types.MessageType.PasteElement,
 							payload: {
 								element: clipboard.payload.item as Types.SerializedElement,
 								project: clipboard.payload.project,
@@ -79,7 +78,7 @@ export async function createEditMessageHandler(
 					case Types.ItemType.Page:
 						injection.sender.send({
 							id: uuid.v4(),
-							type: Message.MessageType.PastePage,
+							type: Types.MessageType.PastePage,
 							payload: {
 								page: clipboard.payload.item as Types.SerializedPage,
 								project: clipboard.payload.project

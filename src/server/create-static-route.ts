@@ -1,7 +1,6 @@
 import * as Express from 'express';
 import * as Path from 'path';
 import * as PreviewDocument from '../preview-document';
-import { ProjectRequestResponsePair, MessageType } from '../message';
 import { Sender } from '../sender/server';
 import * as Model from '../model';
 import * as Types from '../types';
@@ -15,13 +14,13 @@ export function createStaticRoute(options: StaticRouteOptions): Express.RequestH
 	return async function staticRoute(req: Express.Request, res: Express.Response): Promise<void> {
 		res.type('html');
 
-		const projectResponse = await options.sender.request<ProjectRequestResponsePair>(
+		const projectResponse = await options.sender.request<Types.ProjectRequestResponsePair>(
 			{
 				id: uuid.v4(),
-				type: MessageType.ProjectRequest,
+				type: Types.MessageType.ProjectRequest,
 				payload: undefined
 			},
-			MessageType.ProjectResponse
+			Types.MessageType.ProjectResponse
 		);
 
 		if (projectResponse.payload.status === Types.ProjectStatus.None) {

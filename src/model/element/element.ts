@@ -1,4 +1,4 @@
-import { computeDifference } from '../../alva-util';
+// import { computeDifference } from '../../alva-util';
 import { ElementContent } from './element-content';
 import { ElementProperty } from './element-property';
 import * as _ from 'lodash';
@@ -76,6 +76,10 @@ export class Element {
 
 	@Mobx.computed
 	private get pattern(): Pattern | undefined {
+		if (!this.project) {
+			return;
+		}
+
 		return this.project.getPatternById(this.patternId);
 	}
 
@@ -605,7 +609,7 @@ export class Element {
 	public toJSON(): Types.SerializedElement {
 		return {
 			containerId: this.containerId,
-			contentIds: Array.from(this.contentIds),
+			contentIds: Array.from(this.contentIds || []),
 			dragged: this.dragged,
 			focused: this.focused,
 			highlighted: this.highlighted,
@@ -627,23 +631,14 @@ export class Element {
 	}
 
 	@Mobx.action
-	public update(b: Element): void {
-		if (this.selected) {
+	public update(b: Types.SerializedElement): void {
+		if (this.selected && this.project) {
 			this.project.unsetSelectedElement();
 		}
 
-		if (this.highlighted) {
+		if (this.highlighted && this.project) {
 			this.project.unsetHighlightedElement();
 		}
-
-		const propsChanges = computeDifference({
-			before: this.getProperties(),
-			after: b.getProperties()
-		});
-
-		propsChanges.removed.forEach(change => this.removeProperty(change.before));
-		propsChanges.added.forEach(change => this.addProperty(change.after));
-		propsChanges.changed.forEach(change => change.before.update(change.after));
 
 		this.highlighted = b.highlighted;
 		this.dragged = b.dragged;
@@ -664,7 +659,6 @@ function deserializeRole(input: Types.SerializedElementRole): Types.ElementRole 
 		case 'node':
 			return Types.ElementRole.Node;
 	}
-	throw new Error(`Unknown element role: ${input}`);
 }
 
 function serializeRole(input: Types.ElementRole): Types.SerializedElementRole {
@@ -674,5 +668,4 @@ function serializeRole(input: Types.ElementRole): Types.SerializedElementRole {
 		case Types.ElementRole.Node:
 			return 'node';
 	}
-	throw new Error(`Unknown element role: ${input}`);
 }

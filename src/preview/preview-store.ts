@@ -1,5 +1,4 @@
 import { ElementArea } from './element-area';
-import * as Message from '../message';
 import * as Mobx from 'mobx';
 import * as Model from '../model';
 import { Sender } from '../sender/preview';
@@ -48,6 +47,15 @@ export interface SyntheticComponents<V> {
 	'synthetic:link': V;
 	'synthetic:text': V;
 }
+
+export type UpdateModel =
+	| Model.Page
+	| Model.Element
+	| Model.ElementAction
+	| Model.ElementProperty
+	| Model.UserStore
+	| Model.UserStoreAction
+	| Model.UserStoreProperty;
 
 export class PreviewStore<V> {
 	@Mobx.observable private components: Components;
@@ -256,6 +264,25 @@ export class PreviewStore<V> {
 		return this.sender;
 	}
 
+	public getUpdateModelById(id: string, type: Types.ChangedClass): UpdateModel | undefined {
+		switch (type) {
+			case Types.ChangedClass.Page:
+				return this.project.getPageById(id);
+			case Types.ChangedClass.Element:
+				return this.project.getElementById(id);
+			case Types.ChangedClass.ElementAction:
+				return this.project.getElementActionById(id);
+			case Types.ChangedClass.ElementProperty:
+				return this.project.getElementPropertyById(id);
+			case Types.ChangedClass.UserStoreAction:
+				return this.project.getUserStore().getActionById(id);
+			case Types.ChangedClass.UserStoreProperty:
+				return this.project.getUserStore().getPropertyById(id);
+			default:
+				return;
+		}
+	}
+
 	public hasHighlightedItem(): boolean {
 		return Boolean(this.getHighlightedElement() || this.getHighlightedElementContent());
 	}
@@ -283,7 +310,7 @@ export class PreviewStore<V> {
 
 		if (this.sender) {
 			this.sender.send({
-				type: Message.MessageType.SelectElement,
+				type: Types.MessageType.SelectElement,
 				id: uuid.v4(),
 				payload: { element: data.element.toJSON() }
 			});
@@ -301,6 +328,12 @@ export class PreviewStore<V> {
 
 		this.updateHighlightedElement(data);
 
+		const previous = this.project.getHighlightedElement();
+
+		if (previous && previous.getId() === data.element.getId()) {
+			return;
+		}
+
 		if (data.element.getRole() === Types.ElementRole.Root) {
 			this.project.unsetHighlightedElement();
 		} else {
@@ -309,7 +342,7 @@ export class PreviewStore<V> {
 
 		if (this.sender) {
 			this.sender.send({
-				type: Message.MessageType.HighlightElement,
+				type: Types.MessageType.HighlightElement,
 				id: uuid.v4(),
 				payload: { element: data.element.toJSON() }
 			});

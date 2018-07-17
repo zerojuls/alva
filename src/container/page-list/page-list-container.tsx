@@ -1,11 +1,11 @@
 import * as Sender from '../../sender/client';
 import { AddPageButton, Layout, LayoutWrap } from '../../components';
-import { MessageType } from '../../message';
 import * as MobxReact from 'mobx-react';
 import { PageTileContainer } from './page-tile-container';
 import * as React from 'react';
 import { ViewStore } from '../../store';
 import * as uuid from 'uuid';
+import * as Types from '../../types';
 
 export const PageListContainer: React.StatelessComponent = MobxReact.inject('store')(
 	MobxReact.observer((props): JSX.Element | null => {
@@ -35,7 +35,7 @@ export const PageListContainer: React.StatelessComponent = MobxReact.inject('sto
 						Sender.send({
 							id: uuid.v4(),
 							payload: undefined,
-							type: MessageType.CreateNewPage
+							type: Types.MessageType.CreateNewPage
 						})
 					}
 				/>

@@ -20,7 +20,7 @@ export const Link = (context: BuiltInContext): BuiltInResult => {
 			hidden: false,
 			id: context.options.getGlobalPropertyId(patternId, ONCLICK_CONTEXT_ID),
 			label: 'Interaction',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'onClick',
 			required: false
 		})

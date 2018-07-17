@@ -1,9 +1,9 @@
 import * as AlvaUtil from '../alva-util';
 import * as _ from 'lodash';
 import { isMessage } from './is-message';
-import * as Message from '../message';
+import * as Types from '../types';
 
-const TYPES = Object.values(Message.MessageType);
+const TYPES = Object.values(Types.MessageType);
 const OVERTURE_LENGTH = 8;
 
 export enum TechnicalMessageType {
@@ -17,11 +17,11 @@ export enum MessageHeaderStatus {
 }
 
 export interface MessageHeader {
-	type: Message.MessageType | TechnicalMessageType;
+	type: Types.MessageType | TechnicalMessageType;
 	status: MessageHeaderStatus;
 }
 
-export function serialize(message: Message.Message): string {
+export function serialize(message: Types.Message): string {
 	const headerData = JSON.stringify({ type: message.type });
 	const headerLength = headerData.length.toString();
 
@@ -35,7 +35,7 @@ export function serialize(message: Message.Message): string {
 	return [length, headerData, JSON.stringify(message)].join('');
 }
 
-export function deserialize(data: string): Message.Message | undefined {
+export function deserialize(data: string): Types.Message | undefined {
 	const messageHeader = getMessageHeader(data);
 
 	if (messageHeader.status === MessageHeaderStatus.Error) {
@@ -58,7 +58,7 @@ export function deserialize(data: string): Message.Message | undefined {
 		return;
 	}
 
-	return parsed.result;
+	return parsed.result as Types.Message;
 }
 
 export function getMessageBody(data: string): string | undefined {

@@ -1,5 +1,4 @@
 import * as Electron from 'electron';
-import * as Message from '../../message';
 import * as Model from '../../model';
 import { Sender } from '../../sender/server';
 import * as Types from '../../types';
@@ -31,7 +30,7 @@ export function createLibraryMenu(
 					injection.sender.send({
 						id: uuid.v4(),
 						payload: { library: undefined },
-						type: Message.MessageType.ConnectPatternLibraryRequest
+						type: Types.MessageType.ConnectPatternLibraryRequest
 					});
 				}
 			},
@@ -54,7 +53,7 @@ export function createLibraryMenu(
 						.forEach(library => {
 							injection.sender.send({
 								id: uuid.v4(),
-								type: Message.MessageType.UpdatePatternLibraryRequest,
+								type: Types.MessageType.UpdatePatternLibraryRequest,
 								payload: {
 									id: library.getId()
 								}

@@ -21,49 +21,49 @@ export const Image = (context: BuiltInContext): BuiltInResult => {
 			contextId: SRC_CONTEXT_ID,
 			id: context.options.getGlobalPropertyId(patternId, SRC_CONTEXT_ID),
 			label: 'Image',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'src'
 		}),
 		new PatternProperty.PatternStringProperty({
 			contextId: WIDTH_CONTEXT_ID,
 			id: context.options.getGlobalPropertyId(patternId, WIDTH_CONTEXT_ID),
 			label: 'Width',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'width'
 		}),
 		new PatternProperty.PatternStringProperty({
 			contextId: HEIGHT_CONTEXT_ID,
 			id: context.options.getGlobalPropertyId(patternId, HEIGHT_CONTEXT_ID),
 			label: 'Height',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'height'
 		}),
 		new PatternProperty.PatternStringProperty({
 			contextId: MIN_WIDTH_CONTEXT_ID,
 			id: context.options.getGlobalPropertyId(patternId, MIN_WIDTH_CONTEXT_ID),
 			label: 'Min Width',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'minWidth'
 		}),
 		new PatternProperty.PatternStringProperty({
 			contextId: MIN_HEIGHT_CONTEXT_ID,
 			id: context.options.getGlobalPropertyId(patternId, MIN_HEIGHT_CONTEXT_ID),
 			label: 'Min Height',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'minHeight'
 		}),
 		new PatternProperty.PatternStringProperty({
 			contextId: MAX_WIDTH_CONTEXT_ID,
 			id: context.options.getGlobalPropertyId(patternId, MAX_WIDTH_CONTEXT_ID),
 			label: 'Max Width',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'maxWidth'
 		}),
 		new PatternProperty.PatternStringProperty({
 			contextId: MAX_HEIGHT_CONTEXT_ID,
 			id: context.options.getGlobalPropertyId(patternId, MAX_HEIGHT_CONTEXT_ID),
 			label: 'Max Height',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'maxHeight'
 		}),
 		new PatternProperty.PatternEventHandlerProperty({
@@ -75,7 +75,7 @@ export const Image = (context: BuiltInContext): BuiltInResult => {
 			hidden: false,
 			id: context.options.getGlobalPropertyId(patternId, ONCLICK_CONTEXT_ID),
 			label: 'Interaction',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'onClick',
 			required: false
 		})

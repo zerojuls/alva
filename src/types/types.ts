@@ -73,7 +73,7 @@ export interface SerializedPatternLibrary {
 	description: string;
 	id: string;
 	name: string;
-	origin: SerializedPatternLibraryOrigin;
+	origin: SerializedOrigin;
 	patternProperties: PatternProperty.SerializedPatternProperty[];
 	patterns: SerializedPattern[];
 	state: PatternLibraryState;
@@ -359,12 +359,12 @@ export interface SerializedPatternLibraryFile {
 	relativePath: string;
 }
 
-export enum PatternLibraryOrigin {
+export enum Origin {
 	BuiltIn = 'built-in',
 	UserProvided = 'user-provided'
 }
 
-export type SerializedPatternLibraryOrigin = 'built-in' | 'user-provided';
+export type SerializedOrigin = 'built-in' | 'user-provided';
 
 export enum ProjectStatus {
 	None = 'none',
@@ -448,4 +448,31 @@ export enum ElementTargetType {
 export interface Point {
 	x: number;
 	y: number;
+}
+
+export type ChangeableSerializedClass =
+	| SerializedPage
+	| SerializedProject
+	| SerializedElement
+	| SerializedElementAction
+	| SerializedElementContent
+	| SerializedElementProperty
+	| SerializedPattern
+	| SerializedPatternLibrary
+	| UserStore.SerializedUserStore
+	| UserStore.SerializedUserStoreAction
+	| UserStore.SerializedUserStoreProperty;
+
+export enum ChangedClass {
+	Page = 'page',
+	Project = 'project',
+	Element = 'element',
+	ElementAction = 'element-action',
+	ElementContent = 'element-content',
+	ElementProperty = 'element-property',
+	Pattern = 'pattern',
+	PatternLibrary = 'pattern-library',
+	UserStoreAction = 'user-store-action',
+	UserStoreProperty = 'user-store-property',
+	Unknown = 'unkown'
 }

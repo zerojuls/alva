@@ -2,7 +2,7 @@ import { App } from '../container/app';
 import { createChangeNotifiers } from './create-change-notifiers';
 import { createServerMessageHandler } from './create-server-message-handler';
 import * as Sender from '../sender/client';
-import { MessageType } from '../message';
+import { MessageType } from '../types';
 import * as MobxReact from 'mobx-react';
 import * as Model from '../model';
 import * as React from 'react';

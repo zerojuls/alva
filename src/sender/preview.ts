@@ -1,7 +1,7 @@
 import * as AlvaUtil from '../alva-util';
-import * as Message from '../message';
 import { isMessage } from './is-message';
 import * as Serde from './serde';
+import * as Types from '../types';
 
 export interface SenderInit {
 	endpoint: string;
@@ -16,7 +16,7 @@ export class Sender {
 		this.connection = new WebSocket(this.endpoint);
 	}
 
-	public async send(message: Message.Message): Promise<void> {
+	public async send(message: Types.Message): Promise<void> {
 		if (!isMessage(message)) {
 			return;
 		}
@@ -26,7 +26,7 @@ export class Sender {
 		this.connection.send(Serde.serialize(message));
 	}
 
-	public async receive(handler: (message: Message.Message) => void): Promise<void> {
+	public async receive(handler: (message: Types.Message) => void): Promise<void> {
 		await onReady(this.connection);
 
 		this.connection.addEventListener('message', e => {
@@ -40,8 +40,8 @@ export class Sender {
 		});
 	}
 
-	public async match<T extends Message.Message>(
-		type: Message.Message['type'],
+	public async match<T extends Types.Message>(
+		type: Types.Message['type'],
 		handler: (message: T) => void
 	): Promise<void> {
 		await onReady(this.connection);

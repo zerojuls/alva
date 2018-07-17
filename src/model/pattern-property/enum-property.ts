@@ -1,5 +1,6 @@
 import * as Mobx from 'mobx';
-import { deserializeOrigin, PatternPropertyBase, serializeOrigin } from './property-base';
+import { PatternPropertyBase } from './property-base';
+import * as Serde from '../../serde';
 import * as Types from '../../types';
 
 export interface PatternEnumPropertyInit {
@@ -10,7 +11,7 @@ export interface PatternEnumPropertyInit {
 	id: string;
 	label: string;
 	options: PatternEnumPropertyOption[];
-	origin: Types.PatternPropertyOrigin;
+	origin: Types.Origin;
 	propertyName: string;
 	required: boolean;
 }
@@ -40,7 +41,7 @@ export class PatternEnumProperty extends PatternPropertyBase<EnumValue | undefin
 			options: serialized.options.map(serializedOption =>
 				PatternEnumPropertyOption.from(serializedOption)
 			),
-			origin: deserializeOrigin(serialized.origin),
+			origin: Serde.deserializeOrigin(serialized.origin),
 			propertyName: serialized.propertyName,
 			required: serialized.required
 		});
@@ -99,8 +100,8 @@ export class PatternEnumProperty extends PatternPropertyBase<EnumValue | undefin
 			id: this.id,
 			label: this.label,
 			propertyName: this.propertyName,
-			options: this.options.map(option => option.toJSON()),
-			origin: serializeOrigin(this.origin),
+			options: (this.options || []).map(option => option.toJSON()),
+			origin: Serde.serializeOrigin(this.origin),
 			required: this.required,
 			type: this.type
 		};

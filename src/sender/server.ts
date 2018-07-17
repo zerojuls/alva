@@ -1,21 +1,21 @@
 import { BrowserWindow, ipcMain } from 'electron';
 import { isMessage } from './is-message';
 import * as uuid from 'uuid';
-import * as Message from '../message';
+import * as Types from '../types';
 
-export type ServerHandler = (message: Message.Message) => void;
+export type ServerHandler = (message: Types.Message) => void;
 
 // tslint:disable-next-line:no-any
 export type IpcHandler = (e: any, message: any) => void;
 
 export class Sender {
-	private received: Map<Message.MessageType, Message.Message> = new Map();
+	private received: Map<Types.MessageType, Types.Message> = new Map();
 	private sendHandlers: ServerHandler[] = [];
 
 	// tslint:disable-next-line:no-any
 	private receiveIpcHandlers: IpcHandler[] = [];
 
-	public async receive(handler: (message: Message.Message) => void): Promise<void> {
+	public async receive(handler: (message: Types.Message) => void): Promise<void> {
 		// tslint:disable-next-line:no-any
 		const receiveHandler = (e: any, message: any) => {
 			if (!isMessage(message)) {
@@ -29,7 +29,7 @@ export class Sender {
 		this.receiveIpcHandlers.push(receiveHandler);
 	}
 
-	public request<T extends Message.RequestResponsePair>(
+	public request<T extends Types.RequestResponsePair>(
 		message: T['request'],
 		responseType: T['response']['type']
 	): Promise<T['response']> {
@@ -57,7 +57,7 @@ export class Sender {
 		});
 	}
 
-	public async send(message: Message.Message): Promise<void> {
+	public async send(message: Types.Message): Promise<void> {
 		if (!isMessage(message)) {
 			console.warn(`Server tried to send invalid message: ${JSON.stringify(message)}`);
 			return;
@@ -80,14 +80,14 @@ export class Sender {
 		this.sendHandlers.push(handler);
 	}
 
-	public last<T extends Message.Message>(type: T['type']): T | undefined {
+	public last<T extends Types.Message>(type: T['type']): T | undefined {
 		return this.received.get(type) as T;
 	}
 
 	// tslint:disable-next-line:no-any
 	public async log(...args: any[]): Promise<void> {
 		this.send({
-			type: Message.MessageType.Log,
+			type: Types.MessageType.Log,
 			id: uuid.v4(),
 			payload: args
 		});

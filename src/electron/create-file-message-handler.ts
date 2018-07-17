@@ -1,5 +1,4 @@
 import * as Fs from 'fs';
-import * as Message from '../message';
 import * as MimeTypes from 'mime-types';
 import * as Model from '../model';
 import { Persistence, PersistenceState } from '../persistence';
@@ -18,10 +17,10 @@ const readFile = Util.promisify(Fs.readFile);
 export async function createFileMessageHandler(
 	ctx: ServerMessageHandlerContext,
 	injection: ServerMessageHandlerInjection
-): Promise<(message: Message.Message) => Promise<void>> {
-	return async function fileMessageHandler(message: Message.Message): Promise<void> {
+): Promise<(message: Types.Message) => Promise<void>> {
+	return async function fileMessageHandler(message: Types.Message): Promise<void> {
 		switch (message.type) {
-			case Message.MessageType.CreateNewFileRequest: {
+			case Types.MessageType.CreateNewFileRequest: {
 				const path = await showSaveDialog({
 					title: 'Create New Alva File',
 					defaultPath: 'Untitled Project.alva',
@@ -43,7 +42,7 @@ export async function createFileMessageHandler(
 					injection.ephemeralStore.setProjectPath(path);
 
 					injection.sender.send({
-						type: Message.MessageType.CreateNewFileResponse,
+						type: Types.MessageType.CreateNewFileResponse,
 						id: message.id,
 						payload: {
 							path,
@@ -54,7 +53,7 @@ export async function createFileMessageHandler(
 				}
 				break;
 			}
-			case Message.MessageType.OpenFileRequest: {
+			case Types.MessageType.OpenFileRequest: {
 				const path = await getPath(message.payload);
 				const silent = message.payload ? message.payload.silent : false;
 
@@ -67,7 +66,7 @@ export async function createFileMessageHandler(
 				if (projectResult.state === PersistenceState.Error) {
 					if (!silent) {
 						injection.sender.send({
-							type: Message.MessageType.ShowError,
+							type: Types.MessageType.ShowError,
 							id: message.id,
 							payload: {
 								message: [projectResult.error.message].join('\n'),
@@ -77,7 +76,7 @@ export async function createFileMessageHandler(
 					}
 
 					return injection.sender.send({
-						type: Message.MessageType.OpenFileResponse,
+						type: Types.MessageType.OpenFileResponse,
 						id: message.id,
 						payload: { error: projectResult.error, status: Types.ProjectPayloadStatus.Error }
 					});
@@ -91,7 +90,7 @@ export async function createFileMessageHandler(
 				}
 
 				injection.sender.send({
-					type: Message.MessageType.OpenFileResponse,
+					type: Types.MessageType.OpenFileResponse,
 					id: message.id,
 					payload: { path, contents: project, status: Types.ProjectPayloadStatus.Ok }
 				});
@@ -100,7 +99,7 @@ export async function createFileMessageHandler(
 
 				break;
 			}
-			case Message.MessageType.AssetReadRequest: {
+			case Types.MessageType.AssetReadRequest: {
 				const paths = await showOpenDialog({
 					title: 'Select an image',
 					properties: ['openFile']
@@ -121,14 +120,14 @@ export async function createFileMessageHandler(
 				const mimeType = MimeTypes.lookup(path) || 'application/octet-stream';
 
 				injection.sender.send({
-					type: Message.MessageType.AssetReadResponse,
+					type: Types.MessageType.AssetReadResponse,
 					id: message.id,
 					payload: `data:${mimeType};base64,${content.toString('base64')}`
 				});
 
 				break;
 			}
-			case Message.MessageType.Save: {
+			case Types.MessageType.Save: {
 				const project = Model.Project.from(message.payload.project);
 
 				project.setPath(message.payload.path);

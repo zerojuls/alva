@@ -1,6 +1,5 @@
 import * as Electron from 'electron';
 import { Sender } from '../../sender/server';
-import { MessageType } from '../../message';
 import * as Types from '../../types';
 import * as uuid from 'uuid';
 
@@ -29,7 +28,7 @@ export function createAppMenu(
 					injecton.sender.send({
 						id: uuid.v4(),
 						payload: undefined,
-						type: MessageType.CheckForUpdatesRequest
+						type: Types.MessageType.CheckForUpdatesRequest
 					});
 				}
 			},

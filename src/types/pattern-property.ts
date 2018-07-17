@@ -1,3 +1,5 @@
+import * as Types from '.';
+
 export enum PatternPropertyType {
 	Asset = 'asset',
 	Boolean = 'boolean',
@@ -21,13 +23,6 @@ export type SerializedPatternPropertyType =
 	| 'string[]'
 	| 'string';
 
-export enum PatternPropertyOrigin {
-	BuiltIn = 'built-in',
-	UserProvided = 'user-provided'
-}
-
-export type SerializedPatternPropertyOrigin = 'built-in' | 'user-provided';
-
 export type SerializedPatternProperty =
 	| SerializedPatternAssetProperty
 	| SerializedPatternBooleanProperty
@@ -46,7 +41,7 @@ export interface SerializedPropertyBase {
 	hidden: boolean;
 	id: string;
 	label: string;
-	origin: SerializedPatternPropertyOrigin;
+	origin: Types.SerializedOrigin;
 	propertyName: string;
 	required: boolean;
 	type: SerializedPatternPropertyType;

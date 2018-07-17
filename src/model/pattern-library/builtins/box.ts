@@ -54,7 +54,7 @@ export const Box = (context: BuiltInContext): BuiltInResult => {
 			contextId: FLEX_CONTEXT_ID,
 			id: flexId,
 			label: 'Flex',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'flex',
 			defaultValue: true
 		}),
@@ -62,7 +62,7 @@ export const Box = (context: BuiltInContext): BuiltInResult => {
 			contextId: FLEX_GROW_CONTEXT_ID,
 			id: growId,
 			label: 'Grow',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'flexGrow',
 			defaultValue: 1
 		}),
@@ -70,7 +70,7 @@ export const Box = (context: BuiltInContext): BuiltInResult => {
 			contextId: FLEX_SHRINK_CONTEXT_ID,
 			id: shrinkId,
 			label: 'Shrink',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'flexShrink',
 			defaultValue: 1
 		}),
@@ -78,7 +78,7 @@ export const Box = (context: BuiltInContext): BuiltInResult => {
 			contextId: FLEX_BASIS_CONTEXT_ID,
 			id: basisId,
 			label: 'Size',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'flexBasis',
 			defaultValue: 'auto'
 		}),
@@ -86,7 +86,7 @@ export const Box = (context: BuiltInContext): BuiltInResult => {
 			contextId: WIDHT_CONTEXT_ID,
 			id: widthId,
 			label: 'Width',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'width',
 			defaultValue: 'auto'
 		}),
@@ -94,7 +94,7 @@ export const Box = (context: BuiltInContext): BuiltInResult => {
 			contextId: HEIGHT_CONTEXT_ID,
 			id: heightId,
 			label: 'Height',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'height',
 			defaultValue: 'auto'
 		}),
@@ -102,7 +102,7 @@ export const Box = (context: BuiltInContext): BuiltInResult => {
 			contextId: ALIGN_ITEMS_CONTEXT_ID,
 			id: alignId,
 			label: 'Align',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'alignItems',
 			defaultOptionId: defaultAlign,
 			required: false,
@@ -149,7 +149,7 @@ export const Box = (context: BuiltInContext): BuiltInResult => {
 			contextId: JUSTIFY_CONTENT_CONTEXT_ID,
 			id: justifyId,
 			label: 'Justify',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'justifyContent',
 			defaultOptionId: defaultJustify,
 			hidden: false,
@@ -204,7 +204,7 @@ export const Box = (context: BuiltInContext): BuiltInResult => {
 			id: flexDirectionId,
 			label: 'Column',
 			propertyName: 'column',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			defaultValue: false
 		}),
 		new PatternBooleanProperty({
@@ -212,21 +212,21 @@ export const Box = (context: BuiltInContext): BuiltInResult => {
 			id: flexWrapId,
 			label: 'Wrap',
 			propertyName: 'wrap',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			defaultValue: false
 		}),
 		new PatternNumberProperty({
 			contextId: ORDER_CONTEXT_ID,
 			id: orderId,
 			label: 'Order',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'order'
 		}),
 		new PatternStringProperty({
 			contextId: BACKGROUND_COLOR_CONTEXT_ID,
 			id: backgroundColorId,
 			label: 'Background Color',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'backgroundColor'
 		})
 	];

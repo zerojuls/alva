@@ -1,5 +1,4 @@
 import * as Sender from '../sender/client';
-import * as Message from '../message';
 import * as Mobx from 'mobx';
 import * as Model from '../model';
 import { ViewStore } from '../store';
@@ -22,7 +21,7 @@ export function createChangeNotifiers({ app, store }: NotifierContext): void {
 			payload: {
 				pages: store.getPages().map(p => p.toJSON())
 			},
-			type: Message.MessageType.ChangePages
+			type: Types.MessageType.ChangePages
 		});
 	}, opts);
 
@@ -32,7 +31,7 @@ export function createChangeNotifiers({ app, store }: NotifierContext): void {
 		Sender.send({
 			id: uuid.v4(),
 			payload: { elements },
-			type: Message.MessageType.ChangeElements
+			type: Types.MessageType.ChangeElements
 		});
 	}, opts);
 
@@ -42,7 +41,7 @@ export function createChangeNotifiers({ app, store }: NotifierContext): void {
 		Sender.send({
 			id: uuid.v4(),
 			payload: { elementContents },
-			type: Message.MessageType.ChangeElementContents
+			type: Types.MessageType.ChangeElementContents
 		});
 	}, opts);
 
@@ -52,7 +51,7 @@ export function createChangeNotifiers({ app, store }: NotifierContext): void {
 		Sender.send({
 			id: uuid.v4(),
 			payload: { elementActions },
-			type: Message.MessageType.ChangeElementActions
+			type: Types.MessageType.ChangeElementActions
 		});
 	}, opts);
 
@@ -64,7 +63,7 @@ export function createChangeNotifiers({ app, store }: NotifierContext): void {
 			payload: {
 				metaDown
 			},
-			type: Message.MessageType.KeyboardChange
+			type: Types.MessageType.KeyboardChange
 		});
 	}, opts);
 
@@ -76,17 +75,17 @@ export function createChangeNotifiers({ app, store }: NotifierContext): void {
 			payload: {
 				patternLibraries: patternLibraries.map(l => l.toJSON())
 			},
-			type: Message.MessageType.ChangePatternLibraries
+			type: Types.MessageType.ChangePatternLibraries
 		});
 
 		Sender.send({
 			id: uuid.v4(),
 			payload: {
 				libraries: patternLibraries
-					.filter(l => l.getOrigin() === Types.PatternLibraryOrigin.UserProvided)
+					.filter(l => l.getOrigin() === Types.Origin.UserProvided)
 					.map(l => l.getId())
 			},
-			type: Message.MessageType.CheckLibraryRequest
+			type: Types.MessageType.CheckLibraryRequest
 		});
 	}, opts);
 
@@ -96,9 +95,57 @@ export function createChangeNotifiers({ app, store }: NotifierContext): void {
 			payload: {
 				app: store.getApp().toJSON()
 			},
-			type: Message.MessageType.ChangeApp
+			type: Types.MessageType.ChangeApp
 		});
 	}, opts);
+
+	let syncing = false;
+
+	Mobx.autorun(() => {
+		const project = store.getProject();
+
+		if (project && !syncing) {
+			syncing = true;
+
+			Mobx.spy((change: Types.MobxChange) => {
+				const changedClass = deriveChangedClass(change);
+
+				if (changedClass === Types.ChangedClass.Unknown) {
+					// console.log(change.object);
+					return;
+				}
+
+				switch (change.type) {
+					case Types.MobxChangeType.Update: {
+						Sender.send({
+							id: uuid.v4(),
+							type: Types.MessageType.MobxUpdate,
+							payload: {
+								change: {
+									type: change.type,
+									id: change.object.id,
+									// tslint:disable-next-line:no-any
+									index: (change as any).index,
+									// tslint:disable-next-line:no-any
+									key: (change as any).key,
+									newValue: change.newValue
+								},
+								changedClass
+							}
+						});
+						break;
+					}
+					case Types.MobxChangeType.Add: {
+						// console.log(change);
+						break;
+					}
+					case Types.MobxChangeType.Delete: {
+						console.log(change);
+					}
+				}
+			});
+		}
+	});
 
 	// Mobx.autorun(() => {
 	// 	const project = store.getProject();
@@ -107,10 +154,74 @@ export function createChangeNotifiers({ app, store }: NotifierContext): void {
 	// 		payload: {
 	// 			project: project ? project.toJSON() : undefined
 	// 		},
-	// 		type: Message.MessageType.ChangeProject
+	// 		type: Types.MessageType.ChangeProject
 	// 	});
 	// }, {
 	// 	delay: 5000,
 	// 	scheduler: window.requestIdleCallback
 	// });
+}
+
+type DerivableChange =
+	| Types.MobxUpdate<string, Model.ChangeableModel>
+	| Types.MobxDelete<Model.ChangeableModel>;
+
+function deriveChangedClass(change: DerivableChange): Types.ChangedClass {
+	const source = deriveSource(change);
+
+	if (typeof source === 'undefined') {
+		return Types.ChangedClass.Unknown;
+	}
+
+	if (source instanceof Model.Page) {
+		return Types.ChangedClass.Page;
+	}
+
+	if (source instanceof Model.Element) {
+		return Types.ChangedClass.Element;
+	}
+
+	if (source instanceof Model.ElementAction) {
+		return Types.ChangedClass.ElementAction;
+	}
+
+	if (source instanceof Model.ElementContent) {
+		return Types.ChangedClass.ElementContent;
+	}
+
+	if (source instanceof Model.ElementProperty) {
+		return Types.ChangedClass.ElementProperty;
+	}
+
+	if (source instanceof Model.Pattern) {
+		return Types.ChangedClass.Pattern;
+	}
+
+	if (source instanceof Model.PatternLibrary) {
+		return Types.ChangedClass.PatternLibrary;
+	}
+
+	if (source instanceof Model.UserStoreProperty) {
+		return Types.ChangedClass.UserStoreProperty;
+	}
+
+	if (source instanceof Model.UserStoreAction) {
+		return Types.ChangedClass.UserStoreAction;
+	}
+
+	return Types.ChangedClass.Unknown;
+}
+
+function deriveSource(change: Types.MobxChange): Model.ChangeableModel | undefined {
+	switch (change.type) {
+		case Types.MobxChangeType.Update:
+			return change.object;
+		case Types.MobxChangeType.Delete:
+			return change.oldValue;
+	}
+}
+
+export interface NotifierContext {
+	app: Model.AlvaApp;
+	store: ViewStore;
 }

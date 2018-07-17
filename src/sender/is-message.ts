@@ -1,9 +1,9 @@
-import { Message, MessageType } from '../message';
+import * as Types from '../types';
 
-const TYPES = Object.values(MessageType);
+const TYPES = Object.values(Types.MessageType);
 
 // tslint:disable-next-line:no-any
-export function isMessage(input: any): input is Message {
+export function isMessage(input: any): input is Types.Message {
 	if (typeof input !== 'object') {
 		return false;
 	}

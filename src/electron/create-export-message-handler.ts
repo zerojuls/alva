@@ -1,6 +1,5 @@
 import * as Export from '../export';
 import * as Fs from 'fs';
-import * as Message from '../message';
 import { requestProject } from './request-project';
 import { showError } from './show-error';
 import { showSaveDialog } from './show-save-dialog';
@@ -14,10 +13,10 @@ import {
 export async function createExportMessageHandler(
 	ctx: ServerMessageHandlerContext,
 	injection: ServerMessageHandlerInjection
-): Promise<(message: Message.Message) => Promise<void>> {
-	return async function exportMessageHandler(message: Message.Message): Promise<void> {
+): Promise<(message: Types.Message) => Promise<void>> {
+	return async function exportMessageHandler(message: Types.Message): Promise<void> {
 		switch (message.type) {
-			case Message.MessageType.ExportHtmlProject: {
+			case Types.MessageType.ExportHtmlProject: {
 				const project = await requestProject(injection.sender);
 
 				const path = await showSaveDialog({
@@ -50,7 +49,7 @@ export async function createExportMessageHandler(
 
 				break;
 			}
-			case Message.MessageType.ExportPngPage: {
+			case Types.MessageType.ExportPngPage: {
 				const project = await requestProject(injection.sender);
 				const activePage = project.getPages().find(p => p.getActive());
 
@@ -86,7 +85,7 @@ export async function createExportMessageHandler(
 				}
 				break;
 			}
-			case Message.MessageType.ExportSketchPage: {
+			case Types.MessageType.ExportSketchPage: {
 				const project = await requestProject(injection.sender);
 				const activePage = project.getPages().find(p => p.getActive());
 

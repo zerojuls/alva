@@ -1,5 +1,5 @@
+import * as Types from '../';
 import { Envelope, EmptyEnvelope } from './envelope';
-import * as Types from '../types';
 
 export enum MessageType {
 	ActivatePage = 'activate-page',
@@ -10,6 +10,7 @@ export enum MessageType {
 	AssetReadResponse = 'asset-read-response',
 	BundleChange = 'bundle-change',
 	Clipboard = 'clipboard',
+	MobxUpdate = 'change',
 	CheckForUpdatesRequest = 'check-for-updates-request',
 	CheckLibraryRequest = 'check-library-request',
 	CheckLibraryResponse = 'check-library-response',
@@ -79,6 +80,7 @@ export type Message =
 	| AppLoaded
 	| AssetReadRequest
 	| AssetReadResponse
+	| MobxUpdateMessage
 	| CheckForUpdatesRequest
 	| CheckLibraryRequest
 	| CheckLibraryResponse
@@ -331,3 +333,47 @@ export type Clipboard = Envelope<
 		project: Types.SerializedProject;
 	}
 >;
+
+export interface MobxUpdatePayload {
+	// tslint:disable-next-line:no-any
+	change: Types.MobxUpdateChange;
+	changedClass: Types.ChangedClass;
+}
+
+export type MobxUpdateChange =
+	| MobxArrayUpdatePayload
+	| MobxMapUpdatePayload
+	| MobxObjectUpdatePayload;
+
+export interface MobxArrayUpdatePayload {
+	type: Types.MobxChangeType.Update;
+	id: string;
+	name: string;
+	index: number;
+	// tslint:disable-next-line:no-any
+	newValue: any;
+	// tslint:disable-next-line:no-any
+	oldValue: any;
+}
+
+export interface MobxMapUpdatePayload {
+	type: Types.MobxChangeType.Update;
+	id: string;
+	key: string;
+	name: string;
+	// tslint:disable-next-line:no-any
+	newValue: any;
+	// tslint:disable-next-line:no-any
+	oldValue: any;
+}
+
+export interface MobxObjectUpdatePayload {
+	type: Types.MobxChangeType.Update;
+	id: string;
+	key: string;
+	// tslint:disable-next-line:no-any
+	newValue: any;
+}
+
+// tslint:disable-next-line:no-any
+export type MobxUpdateMessage = Envelope<MessageType.MobxUpdate, MobxUpdatePayload>;

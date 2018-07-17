@@ -1,9 +1,8 @@
-import * as Message from '../message';
 import * as Model from '../model';
 import { ViewStore } from '../store';
 import * as Types from '../types';
 
-export type EditMessageHandler = (message: Message.Message) => void;
+export type EditMessageHandler = (message: Types.Message) => void;
 
 export function createEditMessageHandler({
 	app,
@@ -13,7 +12,7 @@ export function createEditMessageHandler({
 	app: Model.AlvaApp;
 }): EditMessageHandler {
 	// tslint:disable-next-line:cyclomatic-complexity
-	return function editMessageHandler(message: Message.Message): void {
+	return function editMessageHandler(message: Types.Message): void {
 		// Do not perform custom operations when an input is selected
 		if (document.activeElement.tagName.toLowerCase() === 'input') {
 			return;
@@ -22,15 +21,15 @@ export function createEditMessageHandler({
 		const project = store.getProject();
 
 		switch (message.type) {
-			case Message.MessageType.Undo: {
+			case Types.MessageType.Undo: {
 				store.undo();
 				break;
 			}
-			case Message.MessageType.Redo: {
+			case Types.MessageType.Redo: {
 				store.redo();
 				break;
 			}
-			case Message.MessageType.Cut: {
+			case Types.MessageType.Cut: {
 				switch (project.getFocusedItemType()) {
 					case Types.ItemType.Element:
 						store.removeSelectedElement();
@@ -40,12 +39,12 @@ export function createEditMessageHandler({
 				}
 				break;
 			}
-			case Message.MessageType.CutElement:
-			case Message.MessageType.DeleteElement: {
+			case Types.MessageType.CutElement:
+			case Types.MessageType.DeleteElement: {
 				store.removeElementById(message.payload);
 				break;
 			}
-			case Message.MessageType.Delete: {
+			case Types.MessageType.Delete: {
 				switch (project.getFocusedItemType()) {
 					case Types.ItemType.Element:
 						store.removeSelectedElement();
@@ -55,7 +54,7 @@ export function createEditMessageHandler({
 				}
 				break;
 			}
-			case Message.MessageType.PasteElement: {
+			case Types.MessageType.PasteElement: {
 				const activePage = store.getActivePage() as Model.Page;
 
 				if (!activePage) {
@@ -100,7 +99,7 @@ export function createEditMessageHandler({
 				project.setSelectedElement(clonedElement);
 				break;
 			}
-			case Message.MessageType.PastePage: {
+			case Types.MessageType.PastePage: {
 				const pages = store.getPages();
 				const activePage = (store.getActivePage() || pages[pages.length - 1]) as Model.Page;
 
@@ -120,7 +119,7 @@ export function createEditMessageHandler({
 				project.setActivePage(clonedPage);
 				break;
 			}
-			case Message.MessageType.Duplicate: {
+			case Types.MessageType.Duplicate: {
 				switch (project.getFocusedItemType()) {
 					case Types.ItemType.Element:
 						store.duplicateSelectedElement();
@@ -130,7 +129,7 @@ export function createEditMessageHandler({
 				}
 				break;
 			}
-			case Message.MessageType.DuplicateElement: {
+			case Types.MessageType.DuplicateElement: {
 				switch (project.getFocusedItemType()) {
 					case Types.ItemType.Element:
 						store.duplicateElementById(message.payload);

@@ -1,17 +1,16 @@
-import * as Message from '../message';
 import * as Model from '../model';
 import { Sender } from '../sender/server';
 import * as Types from '../types';
 import * as uuid from 'uuid';
 
 export async function requestProject(sender: Sender): Promise<Model.Project> {
-	const projectResponse = await sender.request<Message.ProjectRequestResponsePair>(
+	const projectResponse = await sender.request<Types.ProjectRequestResponsePair>(
 		{
 			id: uuid.v4(),
-			type: Message.MessageType.ProjectRequest,
+			type: Types.MessageType.ProjectRequest,
 			payload: undefined
 		},
-		Message.MessageType.ProjectResponse
+		Types.MessageType.ProjectResponse
 	);
 
 	if (projectResponse.payload.status === Types.ProjectStatus.None) {

@@ -1,5 +1,4 @@
 import * as Electron from 'electron';
-import { MessageType } from '../../message';
 import * as Model from '../../model';
 import { requestProject } from '../request-project';
 import { Sender } from '../../sender/server';
@@ -25,7 +24,7 @@ export function createFileMenu(
 				accelerator: 'CmdOrCtrl+N',
 				click: () => {
 					injection.sender.send({
-						type: MessageType.CreateNewFileRequest,
+						type: Types.MessageType.CreateNewFileRequest,
 						id: uuid.v4(),
 						payload: undefined
 					});
@@ -36,7 +35,7 @@ export function createFileMenu(
 				accelerator: 'CmdOrCtrl+O',
 				click: () => {
 					injection.sender.send({
-						type: MessageType.OpenFileRequest,
+						type: Types.MessageType.OpenFileRequest,
 						id: uuid.v4(),
 						payload: undefined
 					});
@@ -51,7 +50,7 @@ export function createFileMenu(
 				accelerator: 'CmdOrCtrl+Shift+N',
 				click: () => {
 					injection.sender.send({
-						type: MessageType.CreateNewPage,
+						type: Types.MessageType.CreateNewPage,
 						id: uuid.v4(),
 						payload: undefined
 					});
@@ -69,7 +68,7 @@ export function createFileMenu(
 					const freshProject = await requestProject(injection.sender);
 
 					injection.sender.send({
-						type: MessageType.Save,
+						type: Types.MessageType.Save,
 						id: uuid.v4(),
 						payload: {
 							path: freshProject.getPath(),
@@ -94,7 +93,7 @@ export function createFileMenu(
 
 							injection.sender.send({
 								id: uuid.v4(),
-								type: MessageType.ExportSketchPage,
+								type: Types.MessageType.ExportSketchPage,
 								payload: { path: undefined }
 							});
 						}
@@ -109,7 +108,7 @@ export function createFileMenu(
 
 							injection.sender.send({
 								id: uuid.v4(),
-								type: MessageType.ExportPngPage,
+								type: Types.MessageType.ExportPngPage,
 								payload: { path: undefined }
 							});
 						}
@@ -128,7 +127,7 @@ export function createFileMenu(
 
 							injection.sender.send({
 								id: uuid.v4(),
-								type: MessageType.ExportHtmlProject,
+								type: Types.MessageType.ExportHtmlProject,
 								payload: { path: undefined }
 							});
 						}

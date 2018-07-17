@@ -1,7 +1,6 @@
 import * as Express from 'express';
 import * as Path from 'path';
 import * as PreviewDocument from '../preview-document';
-import { ProjectRequestResponsePair, MessageType } from '../message';
 import { Sender } from '../sender/server';
 import { sizedBrowser } from './sized-browser';
 import * as Model from '../model';
@@ -32,13 +31,13 @@ export function createSketchRoute(options: ScreenshotRouteOptions): Express.Requ
 
 		res.type(extname);
 
-		const projectResponse = await options.sender.request<ProjectRequestResponsePair>(
+		const projectResponse = await options.sender.request<Types.ProjectRequestResponsePair>(
 			{
 				id: uuid.v4(),
-				type: MessageType.ProjectRequest,
+				type: Types.MessageType.ProjectRequest,
 				payload: undefined
 			},
-			MessageType.ProjectResponse
+			Types.MessageType.ProjectResponse
 		);
 
 		if (projectResponse.payload.status === Types.ProjectStatus.None) {

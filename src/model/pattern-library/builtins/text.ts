@@ -14,7 +14,7 @@ export const Text = (context: BuiltInContext): BuiltInResult => {
 			contextId: 'text',
 			id: context.options.getGlobalPropertyId(patternId, TEXT_CONTEXT_ID),
 			label: 'Text',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'text',
 			defaultValue: 'Text'
 		})

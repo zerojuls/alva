@@ -1,5 +1,4 @@
 import * as Electron from 'electron';
-import { MessageType } from '../../message';
 import * as Model from '../../model';
 import { Sender } from '../../sender/server';
 import * as Types from '../../types';
@@ -27,7 +26,7 @@ export function createEditMenu(
 				click: () =>
 					injection.sender.send({
 						id: uuid.v4(),
-						type: MessageType.Undo,
+						type: Types.MessageType.Undo,
 						payload: undefined
 					})
 			},
@@ -39,7 +38,7 @@ export function createEditMenu(
 					injection.sender.send({
 						id: uuid.v4(),
 						payload: undefined,
-						type: MessageType.Redo
+						type: Types.MessageType.Redo
 					})
 			},
 			{
@@ -53,7 +52,7 @@ export function createEditMenu(
 					injection.sender.send({
 						id: uuid.v4(),
 						payload: undefined,
-						type: MessageType.Cut
+						type: Types.MessageType.Cut
 					});
 					Electron.Menu.sendActionToFirstResponder('cut:');
 				}
@@ -66,7 +65,7 @@ export function createEditMenu(
 					injection.sender.send({
 						id: uuid.v4(),
 						payload: undefined,
-						type: MessageType.Copy
+						type: Types.MessageType.Copy
 					});
 					Electron.Menu.sendActionToFirstResponder('copy:');
 				}
@@ -79,7 +78,7 @@ export function createEditMenu(
 					injection.sender.send({
 						id: uuid.v4(),
 						payload: undefined,
-						type: MessageType.Paste
+						type: Types.MessageType.Paste
 					});
 					Electron.Menu.sendActionToFirstResponder('paste:');
 				}
@@ -102,7 +101,7 @@ export function createEditMenu(
 							targetType: Types.ElementTargetType.Inside,
 							id: selectedElement.getId()
 						},
-						type: MessageType.Paste
+						type: Types.MessageType.Paste
 					});
 					Electron.Menu.sendActionToFirstResponder('paste:');
 				}
@@ -118,7 +117,7 @@ export function createEditMenu(
 					injection.sender.send({
 						id: uuid.v4(),
 						payload: undefined,
-						type: MessageType.Duplicate
+						type: Types.MessageType.Duplicate
 					});
 				}
 			},
@@ -141,7 +140,7 @@ export function createEditMenu(
 					injection.sender.send({
 						id: uuid.v4(),
 						payload: undefined,
-						type: MessageType.Delete
+						type: Types.MessageType.Delete
 					});
 					Electron.Menu.sendActionToFirstResponder('delete:');
 				}

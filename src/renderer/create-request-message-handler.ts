@@ -1,10 +1,9 @@
-import * as Message from '../message';
 import * as Model from '../model';
 import * as Sender from '../sender/client';
 import { ViewStore } from '../store';
 import * as Types from '../types';
 
-export type RequestMessageHandler = (message: Message.Message) => void;
+export type RequestMessageHandler = (message: Types.Message) => void;
 
 export function createRequestMessageHandler({
 	app,
@@ -15,15 +14,15 @@ export function createRequestMessageHandler({
 	history: Model.EditHistory;
 	store: ViewStore;
 }): RequestMessageHandler {
-	return function requestMessageHandler(message: Message.Message): void {
+	return function requestMessageHandler(message: Types.Message): void {
 		switch (message.type) {
-			case Message.MessageType.ProjectRequest: {
+			case Types.MessageType.ProjectRequest: {
 				const data = store.getProject();
 
 				if (!data) {
 					return Sender.send({
 						id: message.id,
-						type: Message.MessageType.ProjectResponse,
+						type: Types.MessageType.ProjectResponse,
 						payload: {
 							data: undefined,
 							status: Types.ProjectStatus.None
@@ -33,17 +32,17 @@ export function createRequestMessageHandler({
 
 				return Sender.send({
 					id: message.id,
-					type: Message.MessageType.ProjectResponse,
+					type: Types.MessageType.ProjectResponse,
 					payload: {
 						data: data.toJSON(),
 						status: Types.ProjectStatus.Ok
 					}
 				});
 			}
-			case Message.MessageType.AppRequest: {
+			case Types.MessageType.AppRequest: {
 				return Sender.send({
 					id: message.id,
-					type: Message.MessageType.AppResponse,
+					type: Types.MessageType.AppResponse,
 					payload: {
 						app: app.toJSON()
 					}

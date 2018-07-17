@@ -3,7 +3,6 @@ import { createCompiler } from '../compiler/create-compiler';
 import { createGithubIssueUrl } from './create-github-issue-url';
 import * as Electron from 'electron';
 import * as Fs from 'fs';
-import * as Message from '../message';
 import * as Model from '../model';
 import * as Path from 'path';
 import { requestProject } from './request-project';
@@ -18,10 +17,10 @@ import {
 export async function createLibraryMessageHandler(
 	ctx: ServerMessageHandlerContext,
 	injection: ServerMessageHandlerInjection
-): Promise<(message: Message.Message) => Promise<void>> {
-	return async function libraryMessageHandler(message: Message.Message): Promise<void> {
+): Promise<(message: Types.Message) => Promise<void>> {
+	return async function libraryMessageHandler(message: Types.Message): Promise<void> {
 		switch (message.type) {
-			case Message.MessageType.CreateScriptBundleRequest: {
+			case Types.MessageType.CreateScriptBundleRequest: {
 				// TODO: Come up with a proper id
 				const compiler = createCompiler([], {
 					cwd: process.cwd(),
@@ -38,7 +37,7 @@ export async function createLibraryMessageHandler(
 					const outputFileSystem = compiler.outputFileSystem;
 
 					injection.sender.send({
-						type: Message.MessageType.CreateScriptBundleResponse,
+						type: Types.MessageType.CreateScriptBundleResponse,
 						id: message.id,
 						payload: ['renderer', 'preview']
 							.map(name => ({ name, path: Path.posix.join('/', `${name}.js`) }))
@@ -52,7 +51,7 @@ export async function createLibraryMessageHandler(
 
 				break;
 			}
-			case Message.MessageType.ConnectedPatternLibraryNotification: {
+			case Types.MessageType.ConnectedPatternLibraryNotification: {
 				const project = await requestProject(injection.sender);
 
 				await injection.ephemeralStore.addConnection({
@@ -63,7 +62,7 @@ export async function createLibraryMessageHandler(
 
 				break;
 			}
-			case Message.MessageType.ConnectPatternLibraryRequest: {
+			case Types.MessageType.ConnectPatternLibraryRequest: {
 				const project = await requestProject(injection.sender);
 
 				const paths = await showOpenDialog({
@@ -104,7 +103,7 @@ export async function createLibraryMessageHandler(
 
 				if (!previousLibrary) {
 					injection.sender.send({
-						type: Message.MessageType.ConnectPatternLibraryResponse,
+						type: Types.MessageType.ConnectPatternLibraryResponse,
 						id: message.id,
 						payload: {
 							analysis: analysisResult.result,
@@ -114,7 +113,7 @@ export async function createLibraryMessageHandler(
 					});
 				} else {
 					injection.sender.send({
-						type: Message.MessageType.UpdatePatternLibraryResponse,
+						type: Types.MessageType.UpdatePatternLibraryResponse,
 						id: message.id,
 						payload: {
 							analysis: analysisResult.result,
@@ -126,7 +125,7 @@ export async function createLibraryMessageHandler(
 
 				break;
 			}
-			case Message.MessageType.UpdatePatternLibraryRequest: {
+			case Types.MessageType.UpdatePatternLibraryRequest: {
 				const project = await requestProject(injection.sender);
 				const library = project.getPatternLibraryById(message.payload.id);
 
@@ -151,7 +150,7 @@ export async function createLibraryMessageHandler(
 				}
 
 				injection.sender.send({
-					type: Message.MessageType.UpdatePatternLibraryResponse,
+					type: Types.MessageType.UpdatePatternLibraryResponse,
 					id: message.id,
 					payload: {
 						analysis: analysisResult.result,
@@ -162,12 +161,12 @@ export async function createLibraryMessageHandler(
 
 				break;
 			}
-			case Message.MessageType.CheckLibraryRequest: {
+			case Types.MessageType.CheckLibraryRequest: {
 				const connections = await injection.ephemeralStore.getConnections();
 
 				injection.sender.send({
 					id: message.id,
-					type: Message.MessageType.CheckLibraryResponse,
+					type: Types.MessageType.CheckLibraryResponse,
 					payload: message.payload.libraries.map(lib => {
 						const connection = connections.find(c => c.libraryId === lib);
 

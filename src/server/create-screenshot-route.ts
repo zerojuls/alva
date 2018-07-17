@@ -1,7 +1,6 @@
 import * as Electron from 'electron';
 import * as Express from 'express';
 import * as Path from 'path';
-import { ProjectRequestResponsePair, MessageType } from '../message';
 import { Sender } from '../sender/server';
 import * as Model from '../model';
 import { sizedBrowser } from './sized-browser';
@@ -35,13 +34,13 @@ export function createScreenshotRoute(options: ScreenshotRouteOptions): Express.
 
 		res.type(extname);
 
-		const projectResponse = await options.sender.request<ProjectRequestResponsePair>(
+		const projectResponse = await options.sender.request<Types.ProjectRequestResponsePair>(
 			{
 				id: uuid.v4(),
-				type: MessageType.ProjectRequest,
+				type: Types.MessageType.ProjectRequest,
 				payload: undefined
 			},
-			MessageType.ProjectResponse
+			Types.MessageType.ProjectResponse
 		);
 
 		if (projectResponse.payload.status === Types.ProjectStatus.None) {

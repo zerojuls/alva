@@ -1,12 +1,11 @@
 import * as Mobx from 'mobx';
-import * as Message from '../message';
 import * as _ from 'lodash';
 import * as Types from '../types';
 import { UserStore } from './user-store';
 import * as uuid from 'uuid';
 
 export interface Sender {
-	send(msg: Message.Message): void;
+	send(msg: Types.Message): void;
 }
 
 export interface ElementActionInit {
@@ -82,7 +81,7 @@ export class ElementAction {
 			case Types.UserStoreActionType.OpenExternal: {
 				if (sender) {
 					sender.send({
-						type: Message.MessageType.OpenExternalURL,
+						type: Types.MessageType.OpenExternalURL,
 						id: uuid.v4(),
 						payload: this.payload
 					});
@@ -134,7 +133,7 @@ export class ElementAction {
 	}
 
 	@Mobx.action
-	public update(after: this): void {
+	public update(after: Types.SerializedElementAction): void {
 		this.id = after.id;
 		this.payload = after.payload;
 		this.storeActionId = after.storeActionId;

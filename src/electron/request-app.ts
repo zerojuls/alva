@@ -1,16 +1,16 @@
-import * as Message from '../message';
 import * as Model from '../model';
 import { Sender } from '../sender/server';
+import * as Types from '../types';
 import * as uuid from 'uuid';
 
 export async function requestApp(sender: Sender): Promise<Model.AlvaApp> {
-	const appResponse = await sender.request<Message.AppRequestResponsePair>(
+	const appResponse = await sender.request<Types.AppRequestResponsePair>(
 		{
 			id: uuid.v4(),
-			type: Message.MessageType.AppRequest,
+			type: Types.MessageType.AppRequest,
 			payload: undefined
 		},
-		Message.MessageType.AppResponse
+		Types.MessageType.AppResponse
 	);
 
 	return Model.AlvaApp.from(appResponse.payload.app);

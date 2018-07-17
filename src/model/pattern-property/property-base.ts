@@ -11,7 +11,7 @@ export interface PatternPropertyInit<T> {
 	hidden?: boolean;
 	id?: string;
 	label: string;
-	origin: Types.PatternPropertyOrigin;
+	origin: Types.Origin;
 	propertyName: string;
 	required?: boolean;
 }
@@ -24,7 +24,7 @@ export abstract class PatternPropertyBase<T> {
 	@Mobx.observable protected hidden: boolean = false;
 	@Mobx.observable protected id: string;
 	@Mobx.observable protected label: string;
-	@Mobx.observable protected origin: Types.PatternPropertyOrigin;
+	@Mobx.observable protected origin: Types.Origin;
 	@Mobx.observable protected propertyName: string;
 	@Mobx.observable protected required: boolean = false;
 	@Mobx.observable public type: Types.PatternPropertyType;
@@ -101,28 +101,4 @@ export abstract class PatternPropertyBase<T> {
 
 	public abstract toJSON(): Types.SerializedPatternProperty;
 	public abstract update(patternProperty: PatternPropertyBase<T>): void;
-}
-
-export function deserializeOrigin(
-	input: Types.SerializedPatternOrigin
-): Types.PatternPropertyOrigin {
-	switch (input) {
-		case 'built-in':
-			return Types.PatternPropertyOrigin.BuiltIn;
-		case 'user-provided':
-			return Types.PatternPropertyOrigin.UserProvided;
-	}
-	throw new Error(`Unknown pattern property origin: ${input}`);
-}
-
-export function serializeOrigin(
-	input: Types.PatternPropertyOrigin
-): Types.SerializedPatternPropertyOrigin {
-	switch (input) {
-		case Types.PatternPropertyOrigin.BuiltIn:
-			return 'built-in';
-		case Types.PatternPropertyOrigin.UserProvided:
-			return 'user-provided';
-	}
-	throw new Error(`Unknown pattern property origin: ${input}`);
 }

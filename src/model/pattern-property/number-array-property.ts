@@ -1,5 +1,6 @@
 import * as AlvaUtil from '../../alva-util';
-import { deserializeOrigin, PatternPropertyBase, serializeOrigin } from './property-base';
+import { PatternPropertyBase } from './property-base';
+import * as Serde from '../../serde';
 import * as Types from '../../types';
 
 /**
@@ -22,7 +23,7 @@ export class PatternNumberArrayProperty extends PatternPropertyBase<number[]> {
 			example: serialized.example,
 			id: serialized.id,
 			label: serialized.label,
-			origin: deserializeOrigin(serialized.origin),
+			origin: Serde.deserializeOrigin(serialized.origin),
 			propertyName: serialized.propertyName,
 			required: serialized.required
 		});
@@ -41,7 +42,7 @@ export class PatternNumberArrayProperty extends PatternPropertyBase<number[]> {
 			hidden: this.hidden,
 			id: this.id,
 			label: this.label,
-			origin: serializeOrigin(this.origin),
+			origin: Serde.serializeOrigin(this.origin),
 			propertyName: this.propertyName,
 			required: this.required,
 			type: this.type

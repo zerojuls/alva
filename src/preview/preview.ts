@@ -1,9 +1,8 @@
-import { computeDifference } from '../alva-util';
+// import { computeDifference } from '../alva-util';
 import { ElementArea } from './element-area';
 import exportToSketchData from './export-to-sketch-data';
 import { getComponents } from './get-components';
 import { getInitialData } from './get-initial-data';
-import * as Message from '../message';
 import * as Mobx from 'mobx';
 import * as Model from '../model';
 import { PreviewStore, SyntheticComponents } from './preview-store';
@@ -87,11 +86,35 @@ function main(): void {
 
 		store.setSender(sender);
 
-		sender.match<Message.KeyboardChange>(Message.MessageType.KeyboardChange, message => {
+		sender.match<Types.KeyboardChange>(Types.MessageType.KeyboardChange, message => {
 			store.setMetaDown(message.payload.metaDown);
 		});
 
-		sender.match<Message.ChangePages>(Message.MessageType.ChangePages, message => {
+		sender.match<Types.MobxUpdateMessage>(Types.MessageType.MobxUpdate, message => {
+			switch (message.payload.changedClass) {
+				case Types.ChangedClass.Element:
+				case Types.ChangedClass.ElementAction:
+				case Types.ChangedClass.ElementProperty:
+				case Types.ChangedClass.Page:
+				case Types.ChangedClass.UserStoreAction:
+				case Types.ChangedClass.UserStoreProperty: {
+					const change = message.payload.change as Types.MobxObjectUpdatePayload;
+					const model = store.getUpdateModelById(change.id, message.payload.changedClass);
+
+					if (!model || !change.key) {
+						return;
+					}
+
+					const changeData = model.toJSON();
+					changeData[change.key] = change.newValue;
+
+					// tslint:disable-next-line:no-any
+					(model as any).update(changeData);
+				}
+			}
+		});
+
+		/* sender.match<Types.ChangePages>(Types.MessageType.ChangePages, message => {
 			Mobx.transaction(() => {
 				const changes = computeDifference<Model.Page>({
 					after: message.payload.pages.map(p => Model.Page.from(p, { project })),
@@ -104,7 +127,7 @@ function main(): void {
 			});
 		});
 
-		sender.match<Message.ChangeElements>(Message.MessageType.ChangeElements, message => {
+		sender.match<Types.ChangeElements>(Types.MessageType.ChangeElements, message => {
 			Mobx.transaction(() => {
 				const els = message.payload.elements.map(e => Model.Element.from(e, { project }));
 
@@ -136,8 +159,8 @@ function main(): void {
 			});
 		});
 
-		sender.match<Message.ChangeElementContents>(
-			Message.MessageType.ChangeElementContents,
+		sender.match<Types.ChangeElementContents>(
+			Types.MessageType.ChangeElementContents,
 			message => {
 				Mobx.transaction(() => {
 					const contentChanges = computeDifference<Model.ElementContent>({
@@ -155,8 +178,8 @@ function main(): void {
 			}
 		);
 
-		sender.match<Message.ChangeElementActions>(
-			Message.MessageType.ChangeElementActions,
+		sender.match<Types.ChangeElementActions>(
+			Types.MessageType.ChangeElementActions,
 			message => {
 				Mobx.transaction(() => {
 					const changes = computeDifference<Model.ElementAction>({
@@ -172,8 +195,8 @@ function main(): void {
 			}
 		);
 
-		sender.match<Message.ChangePatternLibraries>(
-			Message.MessageType.ChangePatternLibraries,
+		sender.match<Types.ChangePatternLibraries>(
+			Types.MessageType.ChangePatternLibraries,
 			message => {
 				Mobx.transaction(() => {
 					const libraryChanges = computeDifference<Model.PatternLibrary>({
@@ -212,9 +235,30 @@ function main(): void {
 			}
 		);
 
-		sender.match<Message.ChangeUserStore>(Message.MessageType.ChangeUserStore, message => {
+		sender.match<Types.ChangeUserStore>(Types.MessageType.ChangeUserStore, message => {
 			project.getUserStore().sync(message);
 		});
+
+		sender.match<Types.Change>(Types.MessageType.Change, message => {
+			console.log(message);
+		});
+
+		Mobx.reaction(
+			() => store.getMetaDown(),
+			metaDown => {
+				if (!sender) {
+					return;
+				}
+
+				sender.send({
+					id: uuid.v4(),
+					payload: {
+						metaDown
+					},
+					type: Types.MessageType.KeyboardChange
+				});
+			}
+		); */
 
 		Mobx.reaction(
 			() => store.hasSelectedItem(),
@@ -250,30 +294,13 @@ function main(): void {
 			{ scheduler: window.requestAnimationFrame }
 		);
 
-		Mobx.reaction(
-			() => store.getMetaDown(),
-			metaDown => {
-				if (!sender) {
-					return;
-				}
-
-				sender.send({
-					id: uuid.v4(),
-					payload: {
-						metaDown
-					},
-					type: Message.MessageType.KeyboardChange
-				});
-			}
-		);
-
 		Mobx.autorun(() => {
 			const userStore = store.getProject().getUserStore();
 
 			sender.send({
 				id: uuid.v4(),
 				payload: { userStore: userStore.toJSON() },
-				type: Message.MessageType.ChangeUserStore
+				type: Types.MessageType.ChangeUserStore
 			});
 		});
 	}

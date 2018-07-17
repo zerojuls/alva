@@ -89,11 +89,11 @@ export class UserStoreProperty {
 	}
 
 	@Mobx.action
-	public update(b: UserStoreProperty): void {
+	public update(b: Types.SerializedUserStoreProperty): void {
 		this.id = b.id;
 		this.name = b.name;
 		this.payload = b.payload;
-		this.type = b.type;
+		this.type = deserializeType(b.type);
 	}
 }
 
@@ -103,8 +103,6 @@ function deserializeType(type: Types.SerializedUserStorePropertyType): Types.Use
 			return Types.UserStorePropertyType.String;
 		case 'page':
 			return Types.UserStorePropertyType.Page;
-		default:
-			throw new Error(`Unknown user store property type: ${type}`);
 	}
 }
 
@@ -114,7 +112,5 @@ function serializeType(type: Types.UserStorePropertyType): Types.SerializedUserS
 			return 'string';
 		case Types.UserStorePropertyType.Page:
 			return 'page';
-		default:
-			throw new Error(`Unknown user store property type: ${type}`);
 	}
 }

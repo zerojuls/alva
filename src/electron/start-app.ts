@@ -4,11 +4,11 @@ import * as Electron from 'electron';
 import * as Ephemeral from './ephemeral-store';
 import * as Events from 'events';
 import * as getPort from 'get-port';
-import * as Message from '../message';
 import { Sender } from '../sender/server';
 import { createServer } from '../server';
 import { createWindow } from './create-window';
 import * as uuid from 'uuid';
+import * as Types from '../types';
 
 const log = require('electron-log');
 
@@ -53,7 +53,7 @@ export async function startApp(ctx: AppContext): Promise<{ emitter: Events.Event
 
 			sender.send({
 				id: uuid.v4(),
-				type: Message.MessageType.OpenFileRequest,
+				type: Types.MessageType.OpenFileRequest,
 				payload: { path }
 			});
 		});

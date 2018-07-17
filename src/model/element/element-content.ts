@@ -248,7 +248,7 @@ export class ElementContent {
 	}
 
 	@Mobx.action
-	public update(b: ElementContent): void {
+	public update(b: Types.SerializedElementContent): void {
 		this.elementIds = b.elementIds;
 		this.forcedOpen = b.forcedOpen;
 		this.highlighted = b.highlighted;

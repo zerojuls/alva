@@ -1,6 +1,5 @@
 import { Sender } from '../sender/server';
 import * as Electron from 'electron';
-import { MessageType } from '../message';
 import * as Model from '../model';
 import * as Types from '../types';
 import * as uuid from 'uuid';
@@ -46,7 +45,7 @@ async function createElementMenu(
 			click: () => {
 				context.sender.send({
 					id: uuid.v4(),
-					type: MessageType.Paste,
+					type: Types.MessageType.Paste,
 					payload: {
 						targetType: Types.ElementTargetType.Below,
 						id: element.getId()
@@ -60,7 +59,7 @@ async function createElementMenu(
 			click: () => {
 				context.sender.send({
 					id: uuid.v4(),
-					type: MessageType.Paste,
+					type: Types.MessageType.Paste,
 					payload: {
 						targetType: Types.ElementTargetType.Inside,
 						id: element.getId()
@@ -75,7 +74,7 @@ async function createElementMenu(
 			click: () => {
 				context.sender.send({
 					id: uuid.v4(),
-					type: MessageType.DuplicateElement,
+					type: Types.MessageType.DuplicateElement,
 					payload: element.getId()
 				});
 			}
@@ -90,7 +89,7 @@ async function createElementMenu(
 			click: () => {
 				context.sender.send({
 					id: uuid.v4(),
-					type: MessageType.CutElement,
+					type: Types.MessageType.CutElement,
 					payload: element.getId()
 				});
 				Electron.Menu.sendActionToFirstResponder('cut:');
@@ -103,7 +102,7 @@ async function createElementMenu(
 			click: () => {
 				context.sender.send({
 					id: uuid.v4(),
-					type: MessageType.CopyElement,
+					type: Types.MessageType.CopyElement,
 					payload: element.getId()
 				});
 				Electron.Menu.sendActionToFirstResponder('copy:');
@@ -116,7 +115,7 @@ async function createElementMenu(
 			click: () => {
 				context.sender.send({
 					id: uuid.v4(),
-					type: MessageType.DeleteElement,
+					type: Types.MessageType.DeleteElement,
 					payload: element.getId()
 				});
 				Electron.Menu.sendActionToFirstResponder('delete:');
@@ -158,7 +157,7 @@ function createLayoutMenu(
 						pane: Types.AppPane.PagesPane,
 						visible: !app.getPanes().has(Types.AppPane.PagesPane)
 					},
-					type: MessageType.SetPane
+					type: Types.MessageType.SetPane
 				})
 		},
 		{
@@ -173,7 +172,7 @@ function createLayoutMenu(
 						pane: Types.AppPane.ElementsPane,
 						visible: !app.getPanes().has(Types.AppPane.ElementsPane)
 					},
-					type: MessageType.SetPane
+					type: Types.MessageType.SetPane
 				})
 		},
 		{
@@ -188,7 +187,7 @@ function createLayoutMenu(
 						pane: Types.AppPane.PropertiesPane,
 						visible: !app.getPanes().has(Types.AppPane.PropertiesPane)
 					},
-					type: MessageType.SetPane
+					type: Types.MessageType.SetPane
 				})
 		}
 	];

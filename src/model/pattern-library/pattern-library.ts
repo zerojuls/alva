@@ -7,6 +7,7 @@ import { Pattern, PatternSlot } from '../pattern';
 import { AnyPatternProperty, PatternEnumProperty, PatternProperty } from '../pattern-property';
 import { Project } from '../project';
 import * as Types from '../../types';
+import * as Serde from '../../serde';
 import * as uuid from 'uuid';
 
 export interface PatternLibraryInit {
@@ -15,7 +16,7 @@ export interface PatternLibraryInit {
 	description: string;
 	id: string;
 	name: string;
-	origin: Types.PatternLibraryOrigin;
+	origin: Types.Origin;
 	patternProperties: AnyPatternProperty[];
 	patterns: Pattern[];
 	state: Types.PatternLibraryState;
@@ -47,7 +48,7 @@ export class PatternLibrary {
 	@Mobx.observable private name: string;
 	@Mobx.observable private patternProperties: Map<string, AnyPatternProperty> = new Map();
 	@Mobx.observable private patterns: Map<string, Pattern> = new Map();
-	@Mobx.observable private origin: Types.PatternLibraryOrigin;
+	@Mobx.observable private origin: Types.Origin;
 	@Mobx.observable private state: Types.PatternLibraryState;
 
 	public constructor(init: PatternLibraryInit) {
@@ -73,7 +74,7 @@ export class PatternLibrary {
 
 		const patternLibrary = new PatternLibrary(init);
 
-		if (init.origin === Types.PatternLibraryOrigin.BuiltIn) {
+		if (init.origin === Types.Origin.BuiltIn) {
 			const link = Link({ options, patternLibrary });
 			const page = Page({ options, patternLibrary });
 			const image = Image({ options, patternLibrary });
@@ -107,7 +108,7 @@ export class PatternLibrary {
 			description: serialized.description,
 			id: serialized.id,
 			name: serialized.name,
-			origin: deserializeOrigin(serialized.origin),
+			origin: Serde.deserializeOrigin(serialized.origin),
 			patterns: [],
 			patternProperties: serialized.patternProperties.map(p => PatternProperty.from(p)),
 			state
@@ -242,7 +243,7 @@ export class PatternLibrary {
 	}
 
 	public getCapabilites(): Types.LibraryCapability[] {
-		const isUserProvided = this.origin === Types.PatternLibraryOrigin.UserProvided;
+		const isUserProvided = this.origin === Types.Origin.UserProvided;
 
 		if (!isUserProvided) {
 			return [];
@@ -268,7 +269,7 @@ export class PatternLibrary {
 		return this.name;
 	}
 
-	public getOrigin(): Types.PatternLibraryOrigin {
+	public getOrigin(): Types.Origin {
 		return this.origin;
 	}
 
@@ -364,7 +365,7 @@ export class PatternLibrary {
 			description: this.description,
 			id: this.id,
 			name: this.name,
-			origin: serializeOrigin(this.origin),
+			origin: Serde.serializeOrigin(this.origin),
 			patterns: this.getPatterns().map(p => p.toJSON()),
 			patternProperties: this.getPatternProperties().map(p => p.toJSON()),
 			state: this.state
@@ -405,26 +406,4 @@ function deserializeState(
 		case 'disconnected':
 			return Types.PatternLibraryState.Disconnected;
 	}
-}
-
-function deserializeOrigin(
-	input: Types.SerializedPatternLibraryOrigin
-): Types.PatternLibraryOrigin {
-	switch (input) {
-		case 'built-in':
-			return Types.PatternLibraryOrigin.BuiltIn;
-		case 'user-provided':
-			return Types.PatternLibraryOrigin.UserProvided;
-	}
-	throw new Error(`Unknown pattern library origin: ${input}`);
-}
-
-function serializeOrigin(input: Types.PatternLibraryOrigin): Types.SerializedPatternLibraryOrigin {
-	switch (input) {
-		case Types.PatternLibraryOrigin.BuiltIn:
-			return 'built-in';
-		case Types.PatternLibraryOrigin.UserProvided:
-			return 'user-provided';
-	}
-	throw new Error(`Unknown pattern library origin: ${input}`);
 }

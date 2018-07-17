@@ -36,7 +36,7 @@ export const Page = (context: BuiltInContext): BuiltInResult => {
 			description: 'Adapt viewport to device',
 			id: context.options.getGlobalPropertyId(patternId, VIEWPORT_CONTEXT_ID),
 			label: 'Mobile Viewport',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			propertyName: 'viewport',
 			defaultValue: true
 		}),
@@ -46,7 +46,7 @@ export const Page = (context: BuiltInContext): BuiltInResult => {
 			hidden: false,
 			id: langEnumId,
 			label: 'Language',
-			origin: Types.PatternPropertyOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			options,
 			propertyName: 'lang',
 			required: false

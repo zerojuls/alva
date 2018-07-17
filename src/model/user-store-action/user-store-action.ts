@@ -102,12 +102,12 @@ export class UserStoreAction {
 	}
 
 	@Mobx.action
-	public update(b: this): void {
+	public update(b: Types.SerializedUserStoreAction): void {
 		this.acceptsProperty = b.acceptsProperty;
 		this.id = b.id;
 		this.name = b.name;
-		this.userStorePropertyId = b.userStorePropertyId;
-		this.type = b.type;
+		this.userStorePropertyId = b.storePropertyId;
+		this.type = deserializeType(b.type);
 	}
 }
 
@@ -119,8 +119,6 @@ function deserializeType(type: Types.SerializedUserStoreActionType): Types.UserS
 			return Types.UserStoreActionType.Set;
 		case 'open-external':
 			return Types.UserStoreActionType.OpenExternal;
-		default:
-			throw new Error(`Unknown user store action type: ${type}`);
 	}
 }
 
@@ -132,7 +130,5 @@ function serializeType(type: Types.UserStoreActionType): Types.SerializedUserSto
 			return 'set';
 		case Types.UserStoreActionType.OpenExternal:
 			return 'open-external';
-		default:
-			throw new Error(`Unknown user store action type: ${type}`);
 	}
 }

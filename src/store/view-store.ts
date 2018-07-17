@@ -1,6 +1,5 @@
 import * as Sender from '../sender/client';
 import { debounce, isEqual } from 'lodash';
-import { MessageType } from '../message';
 import * as Mobx from 'mobx';
 import * as Model from '../model';
 import * as Types from '../types';
@@ -99,7 +98,7 @@ export class ViewStore {
 	@Mobx.action
 	public connectPatternLibrary(library?: Model.PatternLibrary): void {
 		Sender.send({
-			type: MessageType.ConnectPatternLibraryRequest,
+			type: Types.MessageType.ConnectPatternLibraryRequest,
 			id: uuid.v4(),
 			payload: {
 				library: library ? library.getId() : undefined
@@ -697,7 +696,7 @@ export class ViewStore {
 	public requestContextMenu(payload: Types.ContextMenuRequestPayload): void {
 		Sender.send({
 			id: uuid.v4(),
-			type: MessageType.ContextMenuRequest,
+			type: Types.MessageType.ContextMenuRequest,
 			payload
 		});
 	}
@@ -723,7 +722,7 @@ export class ViewStore {
 			Sender.send({
 				id: uuid.v4(),
 				payload,
-				type: MessageType.Save
+				type: Types.MessageType.Save
 			});
 		}
 	}
@@ -892,7 +891,7 @@ export class ViewStore {
 
 	public updatePatternLibrary(library: Model.PatternLibrary): void {
 		Sender.send({
-			type: MessageType.UpdatePatternLibraryRequest,
+			type: Types.MessageType.UpdatePatternLibraryRequest,
 			payload: {
 				id: library.getId()
 			},

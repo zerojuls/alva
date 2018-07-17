@@ -1,4 +1,4 @@
-import { Element, ElementContent } from './element';
+import { Element, ElementContent, ElementProperty } from './element';
 import { ElementAction } from './element-action';
 import * as Mobx from 'mobx';
 import * as _ from 'lodash';
@@ -52,6 +52,14 @@ export class Project {
 	@Mobx.observable private userStore: UserStore;
 
 	@Mobx.computed
+	private get elementProperties(): Map<string, ElementProperty> {
+		return this.getElements().reduce((props: Map<string, ElementProperty>, el) => {
+			el.getProperties().forEach(p => props.set(p.getId(), p));
+			return props;
+		}, new Map());
+	}
+
+	@Mobx.computed
 	private get patterns(): Pattern[] {
 		return this.getPatternLibraries().reduce((ps, lib) => [...ps, ...lib.getPatterns()], []);
 	}
@@ -72,6 +80,11 @@ export class Project {
 	@Mobx.computed
 	private get patternSearch(): PatternSearch {
 		return new PatternSearch({ patterns: this.patterns });
+	}
+
+	@Mobx.computed
+	private get highlightedElement(): Element | undefined {
+		return this.getElements().find(e => e.getHighlighted());
 	}
 
 	public constructor(init: ProjectProperties) {
@@ -97,7 +110,7 @@ export class Project {
 			description: 'Basic building blocks available to every new Alva project',
 			id: uuid.v4(),
 			name: 'Built-In Components',
-			origin: Types.PatternLibraryOrigin.BuiltIn,
+			origin: Types.Origin.BuiltIn,
 			patternProperties: [],
 			patterns: [],
 			state: Types.PatternLibraryState.Connected
@@ -238,7 +251,7 @@ export class Project {
 
 	public getBuiltinPatternLibrary(): PatternLibrary {
 		return this.getPatternLibraries().find(
-			p => p.getOrigin() === Types.PatternLibraryOrigin.BuiltIn
+			p => p.getOrigin() === Types.Origin.BuiltIn
 		) as PatternLibrary;
 	}
 
@@ -252,6 +265,10 @@ export class Project {
 
 	public getElementById(id: string): undefined | Element {
 		return this.elements.get(id);
+	}
+
+	public getElementPropertyById(id: string): undefined | ElementProperty {
+		return this.elementProperties.get(id);
 	}
 
 	public getElementContentById(id: string): undefined | ElementContent {
@@ -283,6 +300,10 @@ export class Project {
 
 	public getFocusedItemType(): Types.ItemType {
 		return this.focusedItemType;
+	}
+
+	public getHighlightedElement(): Element | undefined {
+		return this.highlightedElement;
 	}
 
 	public getId(): string {

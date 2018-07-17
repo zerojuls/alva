@@ -1,6 +1,5 @@
-import { computeDifference } from '../alva-util';
+// import { computeDifference } from '../alva-util';
 import * as Mobx from 'mobx';
-import * as Message from '../message';
 import { Project } from './project';
 import * as Types from '../types';
 import { UserStoreAction } from './user-store-action';
@@ -50,7 +49,7 @@ export class UserStore {
 	}
 
 	public getActions(): UserStoreAction[] {
-		return [...this.actions.values()];
+		return this.actions ? [...this.actions.values()] : [];
 	}
 
 	public getNoopAction(): UserStoreAction {
@@ -66,7 +65,7 @@ export class UserStore {
 	}
 
 	public getProperties(): UserStoreProperty[] {
-		return [...this.properties.values()];
+		return this.properties ? [...this.properties.values()] : [];
 	}
 
 	public getPropertyById(id: string): UserStoreProperty | undefined {
@@ -84,8 +83,8 @@ export class UserStore {
 	}
 
 	@Mobx.action
-	public sync(message: Message.ChangeUserStore): void {
-		const userStore = UserStore.from(message.payload.userStore);
+	public sync(message: Types.ChangeUserStore): void {
+		/* const userStore = UserStore.from(message.payload.userStore);
 
 		const propertyChanges = computeDifference<UserStoreProperty>({
 			before: this.getProperties(),
@@ -103,7 +102,7 @@ export class UserStore {
 
 		actionChanges.added.forEach(change => this.addAction(change.after));
 		actionChanges.changed.forEach(change => change.before.update(change.after));
-		actionChanges.removed.forEach(change => this.removeAction(change.before));
+		actionChanges.removed.forEach(change => this.removeAction(change.before)); */
 	}
 
 	public toJSON(): Types.SerializedUserStore {

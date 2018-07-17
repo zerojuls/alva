@@ -43,7 +43,7 @@ class LibrarySettingsContainer extends React.Component<LibrarySettingsContainerP
 				copy={props.library.getDescription()}
 				key={props.library.getId()}
 			>
-				{props.library.getOrigin() === Types.PatternLibraryOrigin.UserProvided && (
+				{props.library.getOrigin() === Types.Origin.UserProvided && (
 					<>
 						<LibraryStateIndicator state={props.library.getState()} />
 						<Components.PropertyBoxBar>

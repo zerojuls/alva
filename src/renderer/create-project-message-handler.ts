@@ -1,11 +1,10 @@
-import * as Message from '../message';
 import * as Model from '../model';
 import * as Sender from '../sender/client';
 import { ViewStore } from '../store';
 import * as Types from '../types';
 import * as uuid from 'uuid';
 
-export type ProjectMessageHandler = (message: Message.Message) => void;
+export type ProjectMessageHandler = (message: Types.Message) => void;
 
 export function createProjectMessageHandler({
 	app,
@@ -17,7 +16,7 @@ export function createProjectMessageHandler({
 	store: ViewStore;
 }): ProjectMessageHandler {
 	// tslint:disable-next-line:cyclomatic-complexity
-	return async function projectMessagehandler(message: Message.Message): Promise<void> {
+	return async function projectMessagehandler(message: Types.Message): Promise<void> {
 		const project = store.getProject();
 
 		if (!project) {
@@ -25,7 +24,7 @@ export function createProjectMessageHandler({
 		}
 
 		switch (message.type) {
-			case Message.MessageType.CreateNewPage: {
+			case Types.MessageType.CreateNewPage: {
 				const page = store.executePageAddNew();
 
 				if (!page) {
@@ -37,13 +36,13 @@ export function createProjectMessageHandler({
 
 				break;
 			}
-			case Message.MessageType.ConnectPatternLibraryResponse: {
+			case Types.MessageType.ConnectPatternLibraryResponse: {
 				const analysis = message.payload.analysis;
 
 				const library = Model.PatternLibrary.create({
 					id: uuid.v4(),
 					name: analysis.name,
-					origin: Types.PatternLibraryOrigin.UserProvided,
+					origin: Types.Origin.UserProvided,
 					patternProperties: [],
 					patterns: [],
 					bundle: analysis.bundle,
@@ -64,12 +63,12 @@ export function createProjectMessageHandler({
 						id: library.getId(),
 						path: message.payload.path
 					},
-					type: Message.MessageType.ConnectedPatternLibraryNotification
+					type: Types.MessageType.ConnectedPatternLibraryNotification
 				});
 
 				break;
 			}
-			case Message.MessageType.UpdatePatternLibraryResponse: {
+			case Types.MessageType.UpdatePatternLibraryResponse: {
 				const library = project.getPatternLibraryById(message.payload.previousLibraryId);
 
 				if (!library) {
@@ -85,12 +84,12 @@ export function createProjectMessageHandler({
 						id: library.getId(),
 						path: message.payload.path
 					},
-					type: Message.MessageType.ConnectedPatternLibraryNotification
+					type: Types.MessageType.ConnectedPatternLibraryNotification
 				});
 
 				break;
 			}
-			case Message.MessageType.CheckLibraryResponse: {
+			case Types.MessageType.CheckLibraryResponse: {
 				message.payload
 					.map(check => ({ library: project.getPatternLibraryById(check.id), check }))
 					.forEach(({ library, check }) => {
@@ -105,15 +104,15 @@ export function createProjectMessageHandler({
 					});
 				break;
 			}
-			case Message.MessageType.SetPane: {
+			case Types.MessageType.SetPane: {
 				app.setPane(message.payload.pane, message.payload.visible);
 				break;
 			}
-			case Message.MessageType.ChangeUserStore: {
+			case Types.MessageType.ChangeUserStore: {
 				project.getUserStore().sync(message);
 				break;
 			}
-			case Message.MessageType.SelectElement: {
+			case Types.MessageType.SelectElement: {
 				if (!message.payload.element) {
 					return;
 				}
@@ -128,7 +127,7 @@ export function createProjectMessageHandler({
 				store.setSelectedElement(previousEl);
 				break;
 			}
-			case Message.MessageType.HighlightElement: {
+			case Types.MessageType.HighlightElement: {
 				if (!message.payload.element) {
 					return;
 				}

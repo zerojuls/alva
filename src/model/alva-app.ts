@@ -111,7 +111,7 @@ export class AlvaApp {
 	public toJSON(): Types.SerializedAlvaApp {
 		return {
 			activeView: serializeView(this.activeView),
-			panes: [...this.panes.values()].map(serializePane),
+			panes: [...(this.panes || new Set()).values()].map(serializePane),
 			rightSidebarTab: serializeRightSidebarTab(this.rightSidebarTab),
 			searchTerm: this.searchTerm,
 			state: serializeState(this.state)
@@ -137,7 +137,6 @@ function deserializePane(state: Types.SerializedAppPane): Types.AppPane {
 		case 'properties-pane':
 			return Types.AppPane.PropertiesPane;
 	}
-	throw new Error(`Unknown app pane: ${state}`);
 }
 
 function deserializeRightSidebarTab(tab: Types.SerializedRightSidebarTab): Types.RightSidebarTab {
@@ -147,7 +146,6 @@ function deserializeRightSidebarTab(tab: Types.SerializedRightSidebarTab): Types
 		case 'project-settings':
 			return Types.RightSidebarTab.ProjectSettings;
 	}
-	throw new Error(`Unknown tab: ${tab}`);
 }
 
 function deserializeState(state: Types.SerializedAppState): Types.AppState {
@@ -157,7 +155,6 @@ function deserializeState(state: Types.SerializedAppState): Types.AppState {
 		case 'started':
 			return Types.AppState.Started;
 	}
-	throw new Error(`Unknown app state: ${state}`);
 }
 
 function deserializeView(state: Types.SerializedAlvaView): Types.AlvaView {
@@ -167,7 +164,6 @@ function deserializeView(state: Types.SerializedAlvaView): Types.AlvaView {
 		case 'PageDetail':
 			return Types.AlvaView.PageDetail;
 	}
-	throw new Error(`Unknown app state: ${state}`);
 }
 
 function serializePane(pane: Types.AppPane): Types.SerializedAppPane {
@@ -179,7 +175,6 @@ function serializePane(pane: Types.AppPane): Types.SerializedAppPane {
 		case Types.AppPane.PropertiesPane:
 			return 'properties-pane';
 	}
-	throw new Error(`Unknown app pane: ${pane}`);
 }
 
 function serializeRightSidebarTab(tab: Types.RightSidebarTab): Types.SerializedRightSidebarTab {
@@ -189,7 +184,6 @@ function serializeRightSidebarTab(tab: Types.RightSidebarTab): Types.SerializedR
 		case Types.RightSidebarTab.ProjectSettings:
 			return 'project-settings';
 	}
-	throw new Error(`Unknown tab: ${tab}`);
 }
 
 function serializeState(state: Types.AppState): Types.SerializedAppState {
@@ -199,7 +193,6 @@ function serializeState(state: Types.AppState): Types.SerializedAppState {
 		case Types.AppState.Started:
 			return 'started';
 	}
-	throw new Error(`Unknown app state: ${state}`);
 }
 
 function serializeView(view: Types.AlvaView): Types.SerializedAlvaView {
@@ -209,5 +202,4 @@ function serializeView(view: Types.AlvaView): Types.SerializedAlvaView {
 		case Types.AlvaView.PageDetail:
 			return 'PageDetail';
 	}
-	throw new Error(`Unknown app state: ${view}`);
 }
