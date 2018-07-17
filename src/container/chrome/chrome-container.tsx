@@ -5,16 +5,15 @@ import { MessageType } from '../../message';
 import * as MobxReact from 'mobx-react';
 import { Page } from '../../model';
 import * as React from 'react';
-import * as Sender from '../../sender/client';
-import { ViewStore } from '../../store';
+// import * as Sender from '../../sender/client';
+// import { ViewStore } from '../../store';
 import * as uuid from 'uuid';
 
 export interface InjectedChromeContainerProps {
-	page: Page;
-	store: ViewStore;
+	page: typeof Page;
 }
 
-export const ChromeContainer = MobxReact.inject('store')(
+export const ChromeContainer = MobxReact.inject('app')(
 	MobxReact.observer((props): JSX.Element | null => {
 		const { store } = props as InjectedChromeContainerProps;
 		const project = store.getProject();
@@ -40,11 +39,11 @@ export const ChromeContainer = MobxReact.inject('store')(
 		return (
 			<Chrome
 				onDoubleClick={() => {
-					Sender.send({
+					/* Sender.send({
 						type: MessageType.Maximize,
 						id: uuid.v4(),
 						payload: undefined
-					});
+					}); */
 				}}
 			>
 				<ChromeSwitch />
@@ -61,11 +60,11 @@ export const ChromeContainer = MobxReact.inject('store')(
 				<BugReport
 					title="Found a bug?"
 					onClick={() => {
-						Sender.send({
-							type: MessageType.OpenExternalURL,
-							id: uuid.v4(),
-							payload: 'https://github.com/meetalva/alva/labels/type%3A%20bug'
-						});
+						// Sender.send({
+						// 	type: MessageType.OpenExternalURL,
+						// 	id: uuid.v4(),
+						// 	payload: 'https://github.com/meetalva/alva/labels/type%3A%20bug'
+						// });
 					}}
 				/>
 				{props.children}

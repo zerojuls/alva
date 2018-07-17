@@ -1,19 +1,19 @@
 const Path = require('path');
 
 const MOBX_PATH = require.resolve('mobx');
-const HTML_SKETCHAPP_PATH = require.resolve('@brainly/html-sketchapp');
-
-const PREVIEW_PATH = require.resolve('./src/preview/preview.ts');
 const EXPORT_TO_SKETCH_DATA_PATH = require.resolve('./src/preview/export-to-sketch-data.ts');
 
-const RENDERER_PATH = require.resolve('./src/preview-renderer/index.ts');
+const PREVIEW_PATH = require.resolve('./src/preview/preview.ts');
+const PREVIEW_RENDERER_PATH = require.resolve('./src/preview-renderer/index.ts');
+const RENDERER_PATH = require.resolve('./src/renderer/index.ts');
 
 module.exports = [
 	{
-		mode: 'production',
+		mode: 'development',
 		entry: {
 			exportToSketchData: EXPORT_TO_SKETCH_DATA_PATH,
 			preview: PREVIEW_PATH,
+			previewRenderer: PREVIEW_RENDERER_PATH,
 			renderer: RENDERER_PATH
 		},
 		module: {

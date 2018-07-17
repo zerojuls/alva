@@ -1,12 +1,22 @@
-import { computeDifference } from '../alva-util';
+/* import { computeDifference } from '../alva-util';
 import * as Mobx from 'mobx';
 import * as Message from '../message';
 import { Project } from './project';
 import * as Types from '../types';
 import { UserStoreAction } from './user-store-action';
+import { UserStoreProperty } from './user-store-property'; */
+
+import * as Mst from 'mobx-state-tree';
+import { UserStoreAction } from './user-store-action';
 import { UserStoreProperty } from './user-store-property';
 
-export interface UserStoreInit {
+export const UserStore = Mst.types.model('UserStore', {
+	id: Mst.types.identifier,
+	actions: Mst.types.array(UserStoreAction),
+	properties: Mst.types.array(UserStoreProperty)
+});
+
+/* export interface UserStoreInit {
 	actions: UserStoreAction[];
 	id: string;
 	properties: UserStoreProperty[];
@@ -113,4 +123,4 @@ export class UserStore {
 			properties: this.getProperties().map(p => p.toJSON())
 		};
 	}
-}
+} */

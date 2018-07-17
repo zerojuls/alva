@@ -1,7 +1,7 @@
-import { ViewStore } from '../store';
+// import { ViewStore } from '../store';
 
-export function registerGlobalListeners({ store }: { store: ViewStore }): void {
-	window.addEventListener('keydown', e => {
+export function registerGlobalListeners(): void {
+	/* window.addEventListener('keydown', e => {
 		if (e.key === 'Meta') {
 			store.setMetaDown(true);
 		}
@@ -11,7 +11,7 @@ export function registerGlobalListeners({ store }: { store: ViewStore }): void {
 		if (e.key === 'Meta') {
 			store.setMetaDown(false);
 		}
-	});
+	}); */
 
 	// Disable drag and drop from outside the application
 	document.addEventListener(

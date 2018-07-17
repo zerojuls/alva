@@ -1,4 +1,21 @@
-import * as _ from 'lodash';
+import * as Mst from 'mobx-state-tree';
+
+export enum UserStorePropertyType {
+	String = 'string',
+	Page = 'page'
+}
+
+export const UserStoreProperty = Mst.types.model('UserStore', {
+	id: Mst.types.identifier,
+	name: Mst.types.string,
+	payload: Mst.types.string,
+	type: Mst.types.enumeration('UserStorePropertyType', [
+		UserStorePropertyType.String,
+		UserStorePropertyType.Page
+	])
+});
+
+/* import * as _ from 'lodash';
 import * as Mobx from 'mobx';
 import { Project } from '../project';
 import * as Types from '../../types';
@@ -118,3 +135,4 @@ function serializeType(type: Types.UserStorePropertyType): Types.SerializedUserS
 			throw new Error(`Unknown user store property type: ${type}`);
 	}
 }
+*/

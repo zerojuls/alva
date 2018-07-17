@@ -1,4 +1,18 @@
-import * as Types from '../../types';
+import * as Mst from 'mobx-state-tree';
+import * as Types from '../types';
+
+export const PatternSlot = Mst.types.model('PatternSlot', {
+	contextId: Mst.types.string,
+	displayName: Mst.types.string,
+	description: Mst.types.optional(Mst.types.string, ''),
+	example: Mst.types.optional(Mst.types.string, ''),
+	hidden: Mst.types.optional(Mst.types.boolean, false),
+	id: Mst.types.identifier,
+	propertyName: Mst.types.string,
+	required: Mst.types.optional(Mst.types.boolean, false),
+	type: Mst.types.enumeration('type', [Types.SlotType.Children, Types.SlotType.Property])
+});
+/* import * as Types from '../types';
 
 export interface PatternSlotInit {
 	contextId: string;
@@ -97,4 +111,4 @@ function toSlotType(type: string): Types.SlotType {
 		default:
 			return Types.SlotType.Children;
 	}
-}
+} */

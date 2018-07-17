@@ -2,10 +2,9 @@ import * as Components from '../components';
 import * as MobxReact from 'mobx-react';
 import * as Model from '../model';
 import * as React from 'react';
-import { WithStore } from '../store';
 import * as Types from '../types';
 
-@MobxReact.inject('store')
+@MobxReact.inject('app')
 @MobxReact.observer
 export class ProjectSettingsContainer extends React.Component {
 	public render(): JSX.Element | null {
@@ -25,10 +24,10 @@ export class ProjectSettingsContainer extends React.Component {
 }
 
 export interface LibrarySettingsContainerProps {
-	library: Model.PatternLibrary;
+	library: typeof Model.PatternLibrary;
 }
 
-@MobxReact.inject('store')
+@MobxReact.inject('app')
 @MobxReact.observer
 class LibrarySettingsContainer extends React.Component<LibrarySettingsContainerProps> {
 	public render(): JSX.Element {

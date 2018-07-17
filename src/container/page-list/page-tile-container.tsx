@@ -2,17 +2,16 @@ import { PageTile } from '../../components';
 import * as MobxReact from 'mobx-react';
 import { Page } from '../../model';
 import * as React from 'react';
-import { WithStore } from '../../store';
 import * as Types from '../../types';
 import { EditableTitleContainer } from '../editable-title/editable-title-container';
 
 export interface PageTileContainerProps {
 	focused: boolean;
 	highlighted: boolean;
-	page: Page;
+	page: typeof Page;
 }
 
-@MobxReact.inject('store')
+@MobxReact.inject('app')
 @MobxReact.observer
 export class PageTileContainer extends React.Component<PageTileContainerProps> {
 	private handleClick(e: React.MouseEvent<HTMLElement>): void {

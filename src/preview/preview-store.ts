@@ -1,4 +1,4 @@
-import { ElementArea } from './element-area';
+/* import { ElementArea } from './element-area';
 import * as Message from '../message';
 import * as Mobx from 'mobx';
 import * as Model from '../model';
@@ -399,4 +399,4 @@ export class PreviewStore<V> {
 	public setScrollPosition(scrollPosition: Types.Point): void {
 		this.scrollPosition = scrollPosition;
 	}
-}
+}*/

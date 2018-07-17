@@ -1,4 +1,13 @@
-import * as Types from '../../types';
+import * as Mst from 'mobx-state-tree';
+import { UserStoreProperty } from './user-store-property';
+
+export const UserStoreAction = Mst.types.model('UserStore', {
+	acceptsProperty: Mst.types.boolean,
+	id: Mst.types.identifier,
+	property: Mst.types.reference(UserStoreProperty)
+});
+
+/* import * as Types from '../types';
 import * as _ from 'lodash';
 import * as Mobx from 'mobx';
 import { UserStore } from '../user-store';
@@ -135,4 +144,4 @@ function serializeType(type: Types.UserStoreActionType): Types.SerializedUserSto
 		default:
 			throw new Error(`Unknown user store action type: ${type}`);
 	}
-}
+} */

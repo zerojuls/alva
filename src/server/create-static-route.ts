@@ -1,9 +1,9 @@
 import * as Express from 'express';
-import * as Path from 'path';
-import * as PreviewDocument from '../preview-document';
+// import * as Path from 'path';
+// import * as PreviewDocument from '../preview-document';
 import { ProjectRequestResponsePair, MessageType } from '../message';
 import { Sender } from '../sender/server';
-import * as Model from '../model';
+// import * as Model from '../model';
 import * as Types from '../types';
 import * as uuid from 'uuid';
 
@@ -42,7 +42,7 @@ export function createStaticRoute(options: StaticRouteOptions): Express.RequestH
 			return;
 		}
 
-		const project = Model.Project.from(projectResponse.payload.data);
+		/* const project = Model.Project.from(projectResponse.payload.data);
 		const firstPage = project.getPages()[0];
 
 		const id = Path.basename(req.path, Path.extname(req.path));
@@ -74,6 +74,6 @@ export function createStaticRoute(options: StaticRouteOptions): Express.RequestH
 					.getPatternLibraries()
 					.map(lib => `<script data-bundle="${lib.getBundleId()}">${lib.getBundle()}</script>`)
 			})
-		);
+		); */
 	};
 }

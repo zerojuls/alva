@@ -7,13 +7,12 @@ import * as MobxReact from 'mobx-react';
 import * as Model from '../../model';
 import * as React from 'react';
 import * as Types from '../../types';
-import { ViewStore } from '../../store';
 
 export interface ElementContainerProps {
-	element: Model.Element;
+	element: typeof Model.Element;
 }
 
-@MobxReact.inject('store')
+@MobxReact.inject('app')
 @MobxReact.observer
 export class ElementContainer extends React.Component<ElementContainerProps> {
 	public render(): JSX.Element | null {

@@ -3,10 +3,9 @@ import { partition } from 'lodash';
 import * as Model from '../../model';
 import { PropertyListItem } from './property-list-item';
 import * as React from 'react';
-import { ViewStore } from '../../store';
 import * as Types from '../../types';
 
-@MobxReact.inject('store')
+@MobxReact.inject('app')
 @MobxReact.observer
 export class PropertyListContainer extends React.Component {
 	public render(): React.ReactNode {
@@ -35,8 +34,8 @@ export class PropertyListContainer extends React.Component {
 	}
 }
 
-function isEventHandlerProperty(elementProperty: Model.ElementProperty): boolean {
-	const patternProperty = elementProperty.getPatternProperty();
+function isEventHandlerProperty(elementProperty: typeof Model.ElementProperty): boolean {
+	const patternProperty = elementProperty.patternProperty;
 	return (
 		typeof patternProperty !== 'undefined' &&
 		patternProperty.getType() !== Types.PatternPropertyType.EventHandler

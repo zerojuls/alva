@@ -4,12 +4,10 @@ import * as Path from 'path';
 
 export function createScriptsRoute(): Express.RequestHandler {
 	return function scriptsRoute(req: Express.Request, res: Express.Response): void {
-		const candidate = Path.join(__dirname, '..', 'scripts', req.path.slice(1));
+		res.type('js');
 
-		if (Fs.existsSync(candidate)) {
-			res.type('js');
-			Fs.createReadStream(candidate).pipe(res);
-			return;
-		}
+		Fs.createReadStream(Path.join(__dirname, '..', 'scripts', req.path.slice(1)))
+			.once('error', () => res.sendStatus(404))
+			.pipe(res);
 	};
 }

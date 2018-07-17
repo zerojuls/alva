@@ -1,4 +1,26 @@
-import * as Mobx from 'mobx';
+import * as Mst from 'mobx-state-tree';
+import { Project } from './project';
+import * as Types from '../types';
+
+export const AlvaApp = Mst.types.model('AlvaApp', {
+	id: Mst.types.identifier,
+	view: Mst.types.enumeration('view', [Types.AlvaView.PageDetail, Types.AlvaView.SplashScreen]),
+	panes: Mst.types.array(
+		Mst.types.enumeration('pane', [
+			Types.AppPane.ElementsPane,
+			Types.AppPane.PagesPane,
+			Types.AppPane.PropertiesPane
+		])
+	),
+	project: Mst.types.union(Project, Mst.types.undefined),
+	tab: Mst.types.enumeration('tab', [
+		Types.RightSidebarTab.ProjectSettings,
+		Types.RightSidebarTab.Properties
+	]),
+	search: Mst.types.string,
+	state: Mst.types.enumeration('state', [Types.AppState.Started, Types.AppState.Starting])
+});
+/* import * as Mobx from 'mobx';
 import * as Types from '../types';
 
 export interface AlvaAppInit {
@@ -210,4 +232,4 @@ function serializeView(view: Types.AlvaView): Types.SerializedAlvaView {
 			return 'PageDetail';
 	}
 	throw new Error(`Unknown app state: ${view}`);
-}
+} */

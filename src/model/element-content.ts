@@ -1,4 +1,17 @@
-import { Element } from './element';
+// import { Element } from './element';
+import * as Mst from 'mobx-state-tree';
+import { PatternSlot } from './pattern-slot';
+
+export const ElementContent = Mst.types.model('ElementContent', {
+	id: Mst.types.identifier,
+	// elements: Mst.types.array(Element),
+	forcedOpen: Mst.types.boolean,
+	highlighted: Mst.types.boolean,
+	open: Mst.types.boolean,
+	slot: Mst.types.reference(PatternSlot)
+});
+
+/* import { Element } from './element';
 import * as _ from 'lodash';
 import * as Mobx from 'mobx';
 import { PatternSlot } from '../pattern';
@@ -256,4 +269,4 @@ export class ElementContent {
 		this.parentElementId = b.parentElementId;
 		this.slotId = b.slotId;
 	}
-}
+}*/

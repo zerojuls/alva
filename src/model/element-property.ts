@@ -1,4 +1,14 @@
-import * as _ from 'lodash';
+import * as Mst from 'mobx-state-tree';
+import { PatternProperty } from './pattern-property';
+
+export const ElementProperty = Mst.types.model('ElementProperty', {
+	id: Mst.types.identifier,
+	patternProperty: Mst.types.reference(PatternProperty),
+	setDefault: Mst.types.boolean,
+	value: Mst.types.union(Mst.types.string, Mst.types.boolean, Mst.types.number)
+});
+
+/*import * as _ from 'lodash';
 import * as Mobx from 'mobx';
 import { AnyPatternProperty } from '../../pattern-property';
 import { Project } from '../../project';
@@ -159,4 +169,4 @@ export class ElementProperty {
 		this.setDefault = b.setDefault;
 		this.value = b.value;
 	}
-}
+} */

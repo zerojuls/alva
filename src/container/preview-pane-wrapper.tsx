@@ -7,7 +7,6 @@ import * as MobxReact from 'mobx-react';
 import * as React from 'react';
 import { Layout } from 'react-feather';
 import { Space, SpaceSize } from '../components/space';
-import { WithStore } from '../store';
 import * as Types from '../types';
 
 export interface PreviewPaneProps {
@@ -15,7 +14,7 @@ export interface PreviewPaneProps {
 	previewFrame: string;
 }
 
-@MobxReact.inject('store')
+@MobxReact.inject('app')
 @MobxReact.observer
 export class PreviewPaneWrapper extends React.Component<PreviewPaneProps> {
 	public render(): JSX.Element {

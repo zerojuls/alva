@@ -1,5 +1,5 @@
 import * as MobxReact from 'mobx-react';
-import { PreviewStore, SyntheticComponents } from '../preview/preview-store';
+// import { PreviewStore, SyntheticComponents } from '../preview/preview-store';
 import { PreviewApplication } from './preview-application';
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
@@ -10,10 +10,12 @@ import { SyntheticPage } from './synthetic-page';
 import { SyntheticText } from './synthetic-text';
 
 export interface Injection {
-	store: PreviewStore<React.SFC>;
+	// tslint:disable-next-line:no-any
+	store: any; // PreviewStore<React.SFC>;
 }
 
-export function render(store: PreviewStore<React.SFC>, container: HTMLElement): void {
+// tslint:disable-next-line:no-any
+export function render(store: any /*PreviewStore<React.SFC>*/, container: HTMLElement): void {
 	ReactDom.render(
 		<MobxReact.Provider store={store}>
 			<PreviewApplication />
@@ -22,7 +24,8 @@ export function render(store: PreviewStore<React.SFC>, container: HTMLElement): 
 	);
 }
 
-export function getSynthetics(): SyntheticComponents<React.SFC> {
+// tslint:disable-next-line:no-any
+export function getSynthetics(): any /* SyntheticComponents<React.SFC> */ {
 	return {
 		'synthetic:box': SyntheticBox,
 		'synthetic:image': SyntheticImage,

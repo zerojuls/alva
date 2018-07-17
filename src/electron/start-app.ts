@@ -1,5 +1,4 @@
 import { startUpdater, stopUpdater } from './auto-updater';
-import { createServerMessageHandler } from './create-server-message-handler';
 import * as Electron from 'electron';
 import * as Ephemeral from './ephemeral-store';
 import * as Events from 'events';
@@ -31,7 +30,7 @@ export async function startApp(ctx: AppContext): Promise<{ emitter: Events.Event
 	const server = createServer({ port: ctx.port, sender });
 	const ephemeralStore = new Ephemeral.EphemeralStore();
 
-	const serverMessageHandler = await createServerMessageHandler(ctx, {
+	/* const serverMessageHandler = await createServerMessageHandler(ctx, {
 		emitter,
 		ephemeralStore,
 		server,
@@ -41,7 +40,7 @@ export async function startApp(ctx: AppContext): Promise<{ emitter: Events.Event
 	sender.use(message => server.emit('message', message));
 
 	sender.receive(serverMessageHandler);
-	server.on('client-message', e => sender.send(e));
+	server.on('client-message', e => sender.send(e)); */
 
 	Electron.app.on('will-finish-launching', () => {
 		Electron.app.on('open-file', async (event, path) => {
@@ -61,7 +60,7 @@ export async function startApp(ctx: AppContext): Promise<{ emitter: Events.Event
 
 	Electron.app.on('activate', async () => {
 		if (process.platform === 'darwin' && !ctx.win) {
-			ctx.win = (await createWindow()).window;
+			ctx.win = (await createWindow({ port: ctx.port as number })).window;
 		}
 	});
 
@@ -71,7 +70,7 @@ export async function startApp(ctx: AppContext): Promise<{ emitter: Events.Event
 	if (ctx.win) {
 		ctx.win.reload();
 	} else {
-		ctx.win = (await createWindow()).window;
+		ctx.win = (await createWindow({ port: ctx.port })).window;
 	}
 
 	startUpdater();
@@ -85,7 +84,6 @@ export async function startApp(ctx: AppContext): Promise<{ emitter: Events.Event
 
 		await server.stop();
 		sender.stop();
-		server.removeAllListeners();
 		emitter.removeAllListeners();
 		Electron.app.removeAllListeners();
 		stopUpdater();

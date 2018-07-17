@@ -1,4 +1,31 @@
-import * as AlvaUtil from '../../alva-util';
+import * as Mst from 'mobx-state-tree';
+import { PatternProperty } from './pattern-property';
+import { PatternSlot } from './pattern-slot';
+import * as Types from '../types';
+
+export const Pattern = Mst.types.model('Pattern', {
+	contextId: Mst.types.string,
+	description: Mst.types.string,
+	exportName: Mst.types.string,
+	id: Mst.types.identifier,
+	name: Mst.types.string,
+	origin: Mst.types.enumeration('origin', [
+		Types.PatternOrigin.BuiltIn,
+		Types.PatternOrigin.UserProvided
+	]),
+	properties: Mst.types.array(PatternProperty),
+	slots: Mst.types.array(PatternSlot),
+	types: Mst.types.enumeration('type', [
+		Types.PatternType.Pattern,
+		Types.PatternType.SyntheticBox,
+		Types.PatternType.SyntheticImage,
+		Types.PatternType.SyntheticLink,
+		Types.PatternType.SyntheticPage,
+		Types.PatternType.SyntheticText
+	])
+});
+
+/* import * as AlvaUtil from '../../alva-util';
 import * as _ from 'lodash';
 import * as Mobx from 'mobx';
 import { PatternLibrary } from '../pattern-library';
@@ -210,4 +237,4 @@ function serializeType(input: Types.PatternType): Types.SerializedPatternType {
 			return 'pattern';
 	}
 	throw new Error(`Unknown pattern type: ${input}`);
-}
+} */

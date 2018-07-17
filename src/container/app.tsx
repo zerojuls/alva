@@ -1,10 +1,11 @@
 import { ChromeContainer } from './chrome/chrome-container';
-import * as Sender from '../sender/client';
+// import * as Sender from '../sender/client';
 import * as Components from '../components';
 import { ConnectPaneContainer } from './connect-pane-container';
 import { ElementList } from './element-list';
-import { MessageType } from '../message';
+// import { MessageType } from '../message';
 import * as MobxReact from 'mobx-react';
+import * as Model from '../model';
 import { PageListContainer } from './page-list/page-list-container';
 import { PatternListContainer } from './pattern-list';
 import { PreviewPaneWrapper } from './preview-pane-wrapper';
@@ -13,26 +14,20 @@ import { PropertiesSwitch } from './properties-switch';
 import { ProjectSettingsContainer } from './project-settings-container';
 import * as React from 'react';
 import { SplashScreenContainer } from './splash-screen-container';
-import { ViewStore } from '../store';
 import * as Types from '../types';
-import * as uuid from 'uuid';
+// import * as uuid from 'uuid';
 
 const Resizeable = require('re-resizable');
 
 Components.globalStyles();
 
-interface InjectedAppProps {
-	store: ViewStore;
-}
-
-@MobxReact.inject('store')
+@MobxReact.inject('app')
 @MobxReact.observer
 export class App extends React.Component {
 	public render(): JSX.Element | null {
-		const props = this.props as InjectedAppProps;
-		const app = props.store.getApp();
+		const props = this.props as Model.WithApp;
 
-		if (app.getState() !== Types.AppState.Started) {
+		if (props.app.state !== Types.AppState.Started) {
 			return null;
 		}
 
@@ -42,27 +37,27 @@ export class App extends React.Component {
 					<ChromeContainer />
 				</Components.FixedArea>
 				<Components.MainArea>
-					{props.store.getActiveAppView() === Types.AlvaView.SplashScreen && (
+					{props.app.view === Types.AlvaView.SplashScreen && (
 						<SplashScreenContainer
 							onPrimaryButtonClick={() => {
-								Sender.send({
+								/* Sender.send({
 									type: MessageType.CreateNewFileRequest,
 									id: uuid.v4(),
 									payload: undefined
-								});
+								}); */
 							}}
 							onSecondaryButtonClick={() => {
-								Sender.send({
+								/* Sender.send({
 									type: MessageType.OpenFileRequest,
 									id: uuid.v4(),
 									payload: undefined
-								});
+								}); */
 							}}
 						/>
 					)}
-					{props.store.getActiveAppView() === Types.AlvaView.PageDetail && (
+					{props.app.view === Types.AlvaView.PageDetail && (
 						<React.Fragment>
-							{app.getPanes().has(Types.AppPane.PagesPane) && (
+							{props.app.panes.includes(Types.AppPane.PagesPane) && (
 								<Resizeable
 									handleStyles={{ right: { zIndex: 1 } }}
 									defaultSize={{ width: 140, height: '100%' }}
@@ -78,7 +73,7 @@ export class App extends React.Component {
 									</Components.SideBar>
 								</Resizeable>
 							)}
-							{app.getPanes().has(Types.AppPane.ElementsPane) && (
+							{props.app.panes.includes(Types.AppPane.ElementsPane) && (
 								<Resizeable
 									handleStyles={{ right: { zIndex: 1 } }}
 									defaultSize={{ width: 240, height: '100%' }}
@@ -108,12 +103,12 @@ export class App extends React.Component {
 								</Resizeable>
 							)}
 							<PreviewPaneWrapper
-								isDragging={props.store.getDragging()}
+								isDragging={/* props.store.getDragging() */ false}
 								key="center"
 								previewFrame={`http://localhost:${props.store.getServerPort()}/preview.html`}
 							/>
 
-							{app.getPanes().has(Types.AppPane.PropertiesPane) && (
+							{props.app.panes.includes(Types.AppPane.PropertiesPane) && (
 								<Resizeable
 									handleStyles={{ left: { zIndex: 1 } }}
 									defaultSize={{ width: 240, height: '100%' }}
@@ -128,27 +123,27 @@ export class App extends React.Component {
 										<div style={{ flexShrink: 0, height: 40 }}>
 											<PropertiesSwitch />
 										</div>
-										{props.store
-											.getPatternLibraries()
-											.every(
-												lib => lib.getOrigin() === Types.PatternLibraryOrigin.BuiltIn
-											) && (
+										{props.app.project.patternLibrares.every(
+											lib => lib.getOrigin() === Types.PatternLibraryOrigin.BuiltIn
+										) && (
 											<ConnectPaneContainer
-												onPrimaryButtonClick={() => props.store.connectPatternLibrary()}
-												onSecondaryButtonClick={() =>
-													Sender.send({
+												onPrimaryButtonClick={() => {
+													console.log('!');
+												}}
+												onSecondaryButtonClick={() => {
+													/* Sender.send({
 														type: MessageType.OpenExternalURL,
 														id: uuid.v4(),
 														payload: 'http://meetalva.github.io/example/example.alva'
-													})
-												}
+													}) */
+												}}
 											/>
 										)}
 										<Components.PropertyPane>
-											{props.store.getApp().getRightSidebarTab() ===
-												Types.RightSidebarTab.Properties && <PropertyListContainer />}
-											{props.store.getApp().getRightSidebarTab() ===
-												Types.RightSidebarTab.ProjectSettings && (
+											{props.app.tab === Types.RightSidebarTab.Properties && (
+												<PropertyListContainer />
+											)}
+											{props.app.tab === Types.RightSidebarTab.ProjectSettings && (
 												<ProjectSettingsContainer />
 											)}
 										</Components.PropertyPane>

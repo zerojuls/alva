@@ -1,4 +1,4 @@
-import * as Mobx from 'mobx';
+/* import * as Mobx from 'mobx';
 import * as Message from '../message';
 import * as _ from 'lodash';
 import * as Types from '../types';
@@ -140,4 +140,4 @@ export class ElementAction {
 		this.storeActionId = after.storeActionId;
 		this.storePropertyId = after.storePropertyId;
 	}
-}
+} */

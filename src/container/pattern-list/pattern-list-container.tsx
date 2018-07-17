@@ -5,9 +5,8 @@ import * as Model from '../../model';
 import { PatternItemContainer } from './pattern-item-container';
 import * as React from 'react';
 import * as Types from '../../types';
-import { ViewStore } from '../../store';
 
-@MobxReact.inject('store')
+@MobxReact.inject('app')
 @MobxReact.observer
 export class PatternListContainer extends React.Component {
 	private dragImg: HTMLElement | null;

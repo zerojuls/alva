@@ -1,25 +1,25 @@
-import { computeDifference } from '../alva-util';
-import { ElementArea } from './element-area';
+// import { computeDifference } from '../alva-util';
+// import { ElementArea } from './element-area';
 import exportToSketchData from './export-to-sketch-data';
-import { getComponents } from './get-components';
+// import { getComponents } from './get-components';
 import { getInitialData } from './get-initial-data';
-import * as Message from '../message';
-import * as Mobx from 'mobx';
-import * as Model from '../model';
-import { PreviewStore, SyntheticComponents } from './preview-store';
-import { Sender } from '../sender/preview';
-import * as Types from '../types';
-import * as uuid from 'uuid';
+// import * as Message from '../message';
+// import * as Mobx from 'mobx';
+// import * as Model from '../model';
+// import { PreviewStore, SyntheticComponents } from './preview-store';
+// import { Sender } from '../sender/preview';
+// import * as Types from '../types';
+// import * as uuid from 'uuid';
 
-export interface Renderer<T> {
-	render(store: PreviewStore<T>, container: HTMLElement): void;
-	getSynthetics(): SyntheticComponents<T>;
-}
+// export interface Renderer<T> {
+// 	render(store: PreviewStore<T>, container: HTMLElement): void;
+// 	getSynthetics(): SyntheticComponents<T>;
+// }
 
 declare global {
 	interface Window {
 		// tslint:disable-next-line:no-any
-		renderer: Renderer<any>;
+		// renderer: Renderer<any>;
 		rpc: {
 			getDocumentSize(): Promise<{ width: number; height: number }>;
 			// tslint:disable-next-line:no-any
@@ -36,9 +36,10 @@ function main(): void {
 	}
 
 	// (1) Deserialize Project from HTML-embedded data payload
-	const mode =
-		data.mode === 'live' ? Types.PreviewDocumentMode.Live : Types.PreviewDocumentMode.Static;
-	const project = Model.Project.from(data.data);
+	// const mode =
+	// data.mode === 'live' ? Types.PreviewDocumentMode.Live : Types.PreviewDocumentMode.Static;
+
+	/* const project = Model.Project.applySnapshot(data.data);
 
 	// (2) Collect components from library scripts
 	const components = getComponents(project);
@@ -276,7 +277,7 @@ function main(): void {
 				type: Message.MessageType.ChangeUserStore
 			});
 		});
-	}
+	} */
 }
 
 main();

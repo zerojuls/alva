@@ -1,19 +1,17 @@
 import * as Mobx from 'mobx';
 import * as MobxReact from 'mobx-react';
 import * as React from 'react';
-
 import { Page } from '../../model';
-import { ViewStore } from '../../store';
 import * as Types from '../../types';
 import { EditableTitle } from '../../components';
 
 export interface EditableTitleContainerProps {
 	focused: boolean;
-	page: Page;
+	page: typeof Page;
 	secondary: Types.EditableTitleType;
 }
 
-@MobxReact.inject('store')
+@MobxReact.inject('app')
 @MobxReact.observer
 export class EditableTitleContainer extends React.Component<EditableTitleContainerProps> {
 	@Mobx.observable

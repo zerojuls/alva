@@ -2,19 +2,14 @@ import * as Component from '../../components';
 import * as MobxReact from 'mobx-react';
 import * as Model from '../../model';
 import * as React from 'react';
-import { ViewStore } from '../../store';
 import * as Types from '../../types';
 import * as uuid from 'uuid';
 
 export interface EventHandlerPropertyViewProps {
-	elementProperty: Model.ElementProperty;
+	elementProperty: typeof Model.ElementProperty;
 }
 
-export interface StoreInjection {
-	store: ViewStore;
-}
-
-@MobxReact.inject('store')
+@MobxReact.inject('app')
 @MobxReact.observer
 export class EventHandlerPropertyView extends React.Component<EventHandlerPropertyViewProps> {
 	private handleActionChange(e: React.ChangeEvent<HTMLSelectElement>): void {

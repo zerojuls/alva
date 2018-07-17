@@ -1,4 +1,25 @@
-import { computeDifference } from '../../alva-util';
+import { ElementContent } from './element-content';
+import { ElementProperty } from './element-property';
+import * as Mst from 'mobx-state-tree';
+import { Pattern } from './pattern';
+import * as Types from '../types';
+
+export const Element = Mst.types.model('Element', {
+	id: Mst.types.identifier,
+	contents: Mst.types.array(ElementContent),
+	dragged: Mst.types.boolean,
+	focused: Mst.types.boolean,
+	forcedOpen: Mst.types.boolean,
+	highlighted: Mst.types.boolean,
+	name: Mst.types.optional(Mst.types.string, ''),
+	open: Mst.types.boolean,
+	pattern: Mst.types.reference(Pattern),
+	placeholderHighlighted: Mst.types.boolean,
+	properties: Mst.types.array(ElementProperty),
+	role: Mst.types.enumeration('role', [Types.ElementRole.Root, Types.ElementRole.Node])
+});
+
+/* import { computeDifference } from '../../alva-util';
 import { ElementContent } from './element-content';
 import { ElementProperty } from './element-property';
 import * as _ from 'lodash';
@@ -675,4 +696,4 @@ function serializeRole(input: Types.ElementRole): Types.SerializedElementRole {
 			return 'node';
 	}
 	throw new Error(`Unknown element role: ${input}`);
-}
+} */

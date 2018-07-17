@@ -7,7 +7,7 @@ import * as Types from '../types';
 import { Injection } from '.';
 
 export interface PreviewComponentProps {
-	element: Model.Element;
+	element: typeof Model.Element;
 }
 
 export type Injected = PreviewComponentProps & Injection;

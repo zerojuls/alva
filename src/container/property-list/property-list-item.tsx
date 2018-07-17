@@ -1,23 +1,20 @@
-import * as Sender from '../../sender/client';
+// import * as Sender from '../../sender/client';
 import * as Component from '../../components';
 import { EventHandlerPropertyView } from './event-handler-property-view';
-import { MessageType } from '../../message';
+// import { MessageType } from '../../message';
 import * as MobxReact from 'mobx-react';
-import { ElementProperty, PatternEnumProperty } from '../../model';
+import * as Model from '../../model';
+// import { ElementProperty, PatternEnumProperty } from '../../model';
 import * as React from 'react';
-import { ViewStore } from '../../store';
+// import { ViewStore } from '../../store';
 import * as Types from '../../types';
-import * as uuid from 'uuid';
+// import * as uuid from 'uuid';
 
 export interface PropertyListItemProps {
-	property: ElementProperty;
+	property: typeof Model.ElementProperty;
 }
 
-export interface StoreInjection {
-	store: ViewStore;
-}
-
-@MobxReact.inject('store')
+@MobxReact.inject('app')
 @MobxReact.observer
 export class PropertyListItem extends React.Component<PropertyListItemProps> {
 	private handleCheckboxChange(e: React.ChangeEvent<HTMLElement>): void {
@@ -96,9 +93,8 @@ export class PropertyListItem extends React.Component<PropertyListItemProps> {
 							props.store.commit();
 						}}
 						onChooseClick={() => {
-							const transactionId = uuid.v4();
-
-							Sender.receive(message => {
+							// const transactionId = uuid.v4();
+							/* Sender.receive(message => {
 								if (
 									message.type === MessageType.AssetReadResponse &&
 									message.id === transactionId
@@ -112,7 +108,7 @@ export class PropertyListItem extends React.Component<PropertyListItemProps> {
 								id: transactionId,
 								payload: undefined,
 								type: MessageType.AssetReadRequest
-							});
+							}); */
 						}}
 						placeholder="Or enter URL"
 					/>

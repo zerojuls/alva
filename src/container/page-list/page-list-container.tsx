@@ -1,13 +1,13 @@
-import * as Sender from '../../sender/client';
+// import * as Sender from '../../sender/client';
 import { AddPageButton, Layout, LayoutWrap } from '../../components';
-import { MessageType } from '../../message';
+// import { MessageType } from '../../message';
 import * as MobxReact from 'mobx-react';
 import { PageTileContainer } from './page-tile-container';
 import * as React from 'react';
-import { ViewStore } from '../../store';
+// import { ViewStore } from '../../store';
 import * as uuid from 'uuid';
 
-export const PageListContainer: React.StatelessComponent = MobxReact.inject('store')(
+export const PageListContainer: React.StatelessComponent = MobxReact.inject('app')(
 	MobxReact.observer((props): JSX.Element | null => {
 		const { store } = props as { store: ViewStore };
 		const project = store.getProject();
@@ -31,13 +31,13 @@ export const PageListContainer: React.StatelessComponent = MobxReact.inject('sto
 						/>
 					))}
 				<AddPageButton
-					onClick={() =>
-						Sender.send({
-							id: uuid.v4(),
-							payload: undefined,
-							type: MessageType.CreateNewPage
-						})
-					}
+					onClick={() => {
+						// Sender.send({
+						// 	id: uuid.v4(),
+						// 	payload: undefined,
+						// 	type: MessageType.CreateNewPage
+						// })
+					}}
 				/>
 			</Layout>
 		);

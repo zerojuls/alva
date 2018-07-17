@@ -1,4 +1,26 @@
-import { computeDifference } from '../../alva-util';
+import * as Mst from 'mobx-state-tree';
+import { Pattern } from './pattern';
+import * as Types from '../types';
+
+export const PatternLibrary = Mst.types.model('PatternLibrary', {
+	bundleId: Mst.types.string,
+	bundle: Mst.types.string,
+	description: Mst.types.string,
+	id: Mst.types.identifier,
+	name: Mst.types.string,
+	origin: Mst.types.enumeration('origin', [
+		Types.PatternLibraryOrigin.BuiltIn,
+		Types.PatternLibraryOrigin.UserProvided
+	]),
+	patterns: Mst.types.array(Pattern),
+	state: Mst.types.enumeration('state', [
+		Types.PatternLibraryState.Connected,
+		Types.PatternLibraryState.Disconnected,
+		Types.PatternLibraryState.Pristine
+	])
+});
+
+/* import { computeDifference } from '../../alva-util';
 import { Box, Image, Link, Page, Text } from './builtins';
 import * as Fuse from 'fuse.js';
 import { isEqual } from 'lodash';
@@ -428,3 +450,4 @@ function serializeOrigin(input: Types.PatternLibraryOrigin): Types.SerializedPat
 	}
 	throw new Error(`Unknown pattern library origin: ${input}`);
 }
+*/

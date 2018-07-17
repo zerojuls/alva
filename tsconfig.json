@@ -4,7 +4,7 @@
 		"allowSyntheticDefaultImports": false,
 		"alwaysStrict": true,
 		"checkJs": false,
-		"declaration": true,
+		"declaration": false,
 		"downlevelIteration": true,
 		"emitDecoratorMetadata": false,
 		"experimentalDecorators": true,

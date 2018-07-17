@@ -2,13 +2,12 @@ import * as Components from '../../components';
 import * as MobxReact from 'mobx-react';
 import { Pattern } from '../../model';
 import * as React from 'react';
-import { ViewStore } from '../../store';
 
 export interface PatternItemContainerContainerProps {
 	pattern: Pattern;
 }
 
-@MobxReact.inject('store')
+@MobxReact.inject('app')
 @MobxReact.observer
 export class PatternItemContainer extends React.Component<PatternItemContainerContainerProps> {
 	private handleDoubleClick(e: React.MouseEvent<HTMLElement>): void {

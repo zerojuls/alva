@@ -1,4 +1,13 @@
-import { Element, ElementContent } from '../element';
+import { Element } from './element';
+import * as MST from 'mobx-state-tree';
+
+export const Page = MST.types.model('Page', {
+	id: MST.types.identifier,
+	name: MST.types.string,
+	root: Element
+});
+
+/* import { Element, ElementContent } from '../element';
 import * as _ from 'lodash';
 import * as Mobx from 'mobx';
 import { Project } from '../project';
@@ -276,3 +285,4 @@ export class Page {
 		this.rootId = b.rootId;
 	}
 }
+*/

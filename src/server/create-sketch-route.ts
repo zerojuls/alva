@@ -1,10 +1,10 @@
 import * as Express from 'express';
 import * as Path from 'path';
-import * as PreviewDocument from '../preview-document';
+// import * as PreviewDocument from '../preview-document';
 import { ProjectRequestResponsePair, MessageType } from '../message';
 import { Sender } from '../sender/server';
-import { sizedBrowser } from './sized-browser';
-import * as Model from '../model';
+// import { sizedBrowser } from './sized-browser';
+// import * as Model from '../model';
 import * as Types from '../types';
 import * as uuid from 'uuid';
 
@@ -59,7 +59,7 @@ export function createSketchRoute(options: ScreenshotRouteOptions): Express.Requ
 			return;
 		}
 
-		const project = Model.Project.from(projectResponse.payload.data);
+		/* const project = Model.Project.from(projectResponse.payload.data);
 		const page = project.getPageById(id);
 
 		if (!page) {
@@ -95,11 +95,11 @@ export function createSketchRoute(options: ScreenshotRouteOptions): Express.Requ
 		} catch (err) {
 			console.error(err);
 			res.sendStatus(500);
-		}
+		} */
 	};
 }
 
-function numberFrom(input: string): number | undefined {
-	const raw = parseInt(input, 10);
-	return Number.isNaN(raw) ? undefined : raw;
-}
+// function numberFrom(input: string): number | undefined {
+// 	const raw = parseInt(input, 10);
+// 	return Number.isNaN(raw) ? undefined : raw;
+// }

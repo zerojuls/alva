@@ -1,8 +1,8 @@
 import * as Express from 'express';
 import { ProjectRequestResponsePair, MessageType } from '../message';
 import { Sender } from '../sender/server';
-import * as Model from '../model';
-import * as Path from 'path';
+// import * as Model from '../model';
+// import * as Path from 'path';
 import * as Types from '../types';
 import * as uuid from 'uuid';
 
@@ -42,8 +42,8 @@ export function createLibrariesRoute(options: LibrariesRouteOptions): Express.Re
 			return;
 		}
 
-		const id = Path.basename(req.path, Path.extname(req.path));
-		const project = Model.Project.from(projectResponse.payload.data);
+		// const id = Path.basename(req.path, Path.extname(req.path));
+		/* const project = Model.Project.from(projectResponse.payload.data);
 		const patternLibrary = project.getPatternLibraryById(id);
 
 		if (typeof patternLibrary === 'undefined') {
@@ -52,6 +52,6 @@ export function createLibrariesRoute(options: LibrariesRouteOptions): Express.Re
 		}
 
 		res.type('js');
-		res.send(patternLibrary.getBundle());
+		res.send(patternLibrary.getBundle()); */
 	};
 }

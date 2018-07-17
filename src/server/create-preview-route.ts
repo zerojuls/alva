@@ -1,8 +1,8 @@
 import * as Express from 'express';
-import * as PreviewDocument from '../preview-document';
+// import * as PreviewDocument from '../preview-document';
 import { ProjectRequestResponsePair, MessageType } from '../message';
 import { Sender } from '../sender/server';
-import * as Model from '../model';
+// import * as Model from '../model';
 import * as Types from '../types';
 import * as uuid from 'uuid';
 
@@ -41,7 +41,7 @@ export function createPreviewRoute(options: PreviewRouteOptions): Express.Reques
 			return;
 		}
 
-		const project = Model.Project.from(projectResponse.payload.data);
+		/* const project = Model.Project.from(projectResponse.payload.data);
 
 		res.send(
 			PreviewDocument.previewDocument({
@@ -53,6 +53,6 @@ export function createPreviewRoute(options: PreviewRouteOptions): Express.Reques
 							`<script src="/libraries/${lib.getId()}.js" data-bundle="${lib.getBundleId()}"></script>`
 					)
 			})
-		);
+		); */
 	};
 }

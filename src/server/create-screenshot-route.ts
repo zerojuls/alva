@@ -1,10 +1,10 @@
-import * as Electron from 'electron';
+// import * as Electron from 'electron';
 import * as Express from 'express';
 import * as Path from 'path';
 import { ProjectRequestResponsePair, MessageType } from '../message';
 import { Sender } from '../sender/server';
-import * as Model from '../model';
-import { sizedBrowser } from './sized-browser';
+// import * as Model from '../model';
+// import { sizedBrowser } from './sized-browser';
 import * as Types from '../types';
 import * as uuid from 'uuid';
 
@@ -62,7 +62,7 @@ export function createScreenshotRoute(options: ScreenshotRouteOptions): Express.
 			return;
 		}
 
-		const project = Model.Project.from(projectResponse.payload.data);
+		/* const project = Model.Project.from(projectResponse.payload.data);
 		const page = project.getPageById(id);
 
 		if (!page) {
@@ -100,11 +100,11 @@ export function createScreenshotRoute(options: ScreenshotRouteOptions): Express.
 				);
 				browser.close();
 			}
-		);
+		); */
 	};
 }
 
-function numberFrom(input: string): number | undefined {
+/* function numberFrom(input: string): number | undefined {
 	const raw = parseInt(input, 10);
 	return Number.isNaN(raw) ? undefined : raw;
 }
@@ -112,4 +112,4 @@ function numberFrom(input: string): number | undefined {
 function floatFrom(input: string): number | undefined {
 	const raw = parseFloat(input);
 	return Number.isNaN(raw) ? undefined : raw;
-}
+} */

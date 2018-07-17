@@ -1,8 +1,8 @@
-import * as Model from '../model';
+// import * as Model from '../model';
 
 // tslint:disable-next-line:no-any
-export function getComponents(project: Model.Project): { [id: string]: any } {
-	return project.getPatternLibraries().reduce((components, library) => {
+export function getComponents(project: any): { [id: string]: any } {
+	return project.patternLibraries.reduce((components, library) => {
 		const libraryComponents = window[library.getBundleId()];
 
 		if (!libraryComponents) {

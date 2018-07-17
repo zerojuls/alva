@@ -5,11 +5,10 @@ import * as Mobx from 'mobx';
 import * as MobxReact from 'mobx-react';
 import * as Model from '../../model';
 import * as React from 'react';
-import * as Store from '../../store';
 import styled from 'styled-components';
 import * as Types from '../../types';
 
-@MobxReact.inject('store')
+@MobxReact.inject('app')
 @MobxReact.observer
 export class ElementList extends React.Component {
 	private dragImg: HTMLElement | null;
