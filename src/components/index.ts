@@ -31,6 +31,7 @@ export * from './property-item-boolean';
 export * from './property-item-enum';
 export * from './property-item-number';
 export * from './property-item-string';
+export * from './property-reference';
 export * from './search';
 export * from './select';
 export * from './space';
