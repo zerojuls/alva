@@ -46,6 +46,10 @@ export class PatternEventHandlerProperty extends PatternPropertyBase<string[]> {
 		);
 	}
 
+	public getEvent(): PatternEvent {
+		return this.event;
+	}
+
 	public toJSON(): Types.SerializedPatternEventHandlerProperty {
 		return {
 			contextId: this.contextId,
@@ -89,6 +93,25 @@ export class PatternEvent {
 		});
 	}
 
+	public getPayloadFields(): string[] {
+		// TODO: Use an Enum
+		switch (this.type) {
+			case Types.PatternEventType.FocusEvent:
+				return ['name', 'value'];
+			case Types.PatternEventType.ChangeEvent:
+			case Types.PatternEventType.InputEvent:
+				return ['name', 'value'];
+			case Types.PatternEventType.MouseEvent:
+				return ['x', 'y'];
+			default:
+				return [];
+		}
+	}
+
+	public getType(): Types.PatternEventType {
+		return this.type;
+	}
+
 	public toJSON(): Types.SerializedPatternEvent {
 		return {
 			type: serializeEventType(this.type)
@@ -98,6 +121,10 @@ export class PatternEvent {
 
 function deserializeEventType(type: Types.SerializedPatternEventType): Types.PatternEventType {
 	switch (type) {
+		case 'FocusEvent':
+			return Types.PatternEventType.FocusEvent;
+		case 'InputEvent':
+			return Types.PatternEventType.InputEvent;
 		case 'ChangeEvent':
 			return Types.PatternEventType.ChangeEvent;
 		case 'MouseEvent':
@@ -109,6 +136,10 @@ function deserializeEventType(type: Types.SerializedPatternEventType): Types.Pat
 
 function serializeEventType(type: Types.PatternEventType): Types.SerializedPatternEventType {
 	switch (type) {
+		case Types.PatternEventType.FocusEvent:
+			return 'FocusEvent';
+		case Types.PatternEventType.InputEvent:
+			return 'InputEvent';
 		case Types.PatternEventType.ChangeEvent:
 			return 'ChangeEvent';
 		case Types.PatternEventType.MouseEvent:

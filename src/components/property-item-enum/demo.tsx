@@ -26,7 +26,7 @@ export class BooleanItemDemo extends React.Component<{}, EnumItemDemoState> {
 	public render(): JSX.Element {
 		return (
 			<DemoContainer title="Enum Item">
-				<PropertyItemEnum label="Label" values={this.state.values} />
+				<PropertyItemEnum label="Label" values={this.state.values} selectedValue={undefined} />
 				<PropertyItemEnum
 					label="Label"
 					values={this.state.values}
