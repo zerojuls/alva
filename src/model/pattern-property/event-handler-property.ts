@@ -129,8 +129,9 @@ function deserializeEventType(type: Types.SerializedPatternEventType): Types.Pat
 			return Types.PatternEventType.ChangeEvent;
 		case 'MouseEvent':
 			return Types.PatternEventType.MouseEvent;
+		case 'Event':
 		default:
-			throw new Error(`Unknown event type: ${type}`);
+			return Types.PatternEventType.Event;
 	}
 }
 
@@ -144,7 +145,8 @@ function serializeEventType(type: Types.PatternEventType): Types.SerializedPatte
 			return 'ChangeEvent';
 		case Types.PatternEventType.MouseEvent:
 			return 'MouseEvent';
+		case Types.PatternEventType.Event:
 		default:
-			throw new Error(`Unknown event type: ${type}`);
+			return 'Event';
 	}
 }
