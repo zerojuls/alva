@@ -21,7 +21,7 @@ export const Page = (context: BuiltInContext): BuiltInResult => {
 		(language, index) =>
 			new PatternEnumPropertyOption({
 				contextId: language.value,
-				id: context.options.getGloablEnumOptionId(langEnumId, language.value),
+				id: context.options.getGlobalEnumOptionId(langEnumId, language.value),
 				name: language.name,
 				ordinal: '1',
 				value: language.value
