@@ -10,7 +10,7 @@ import { PropertyItemEnum } from './property-item-enum';
 import { PropertyItemEvent } from './property-item-event';
 import { PropertyItemNumber } from './property-item-number';
 import { PropertyItemString } from './property-item-string';
-import { ReferenceSelect } from './reference-select';
+import { ReferenceSelect, IconPosition } from './reference-select';
 
 export interface PropertyListItemProps {
 	property: Model.ElementProperty;
@@ -40,16 +40,28 @@ export class PropertyListItem extends React.Component<PropertyListItemProps> {
 				return <PropertyItemAsset key={id} property={property} />;
 			}
 			case Types.PatternPropertyType.Boolean: {
-				return <PropertyItemBoolean key={id} property={property} />;
+				return (
+					<ReferenceSelect key={id} property={property}>
+						<PropertyItemBoolean property={property} />
+					</ReferenceSelect>
+				);
 			}
 			case Types.PatternPropertyType.Enum: {
-				return <PropertyItemEnum key={id} property={property} />;
+				return (
+					<ReferenceSelect key={id} property={property} iconPosition={IconPosition.Indent}>
+						<PropertyItemEnum property={property} />
+					</ReferenceSelect>
+				);
 			}
 			case Types.PatternPropertyType.EventHandler: {
 				return <PropertyItemEvent key={id} property={property} />;
 			}
 			case Types.PatternPropertyType.Number:
-				return <PropertyItemNumber key={id} property={property} />;
+				return (
+					<ReferenceSelect key={id} property={property} iconPosition={IconPosition.Indent}>
+						<PropertyItemNumber key={id} property={property} />
+					</ReferenceSelect>
+				);
 			case Types.PatternPropertyType.String:
 			default: {
 				return (
